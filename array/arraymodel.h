@@ -18,6 +18,9 @@ class arraymodel: public QObject
     QVector<int> vect;
     FILL_TYPE fill;
 
+    int idxA;
+    int idxB;
+
 public:
     //arraymodel();
     arraymodel(FILL_TYPE fill = FILL_TYPE::UNIQUE, int size = 100);

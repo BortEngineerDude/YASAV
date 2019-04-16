@@ -29,10 +29,12 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x050000    # disables all the APIs depr
 SOURCES += main.cpp\
         yasav.cpp \
     array/arraymodel.cpp \
-    array/arrayviewer.cpp
+    array/arrayviewer.cpp \
+    sort/bubble.cpp
 
 HEADERS  += yasav.h \
     array/arraymodel.h \
-    array/arrayviewer.h
+    array/arrayviewer.h \
+    sort/bubble.h
 
 FORMS    += yasav.ui

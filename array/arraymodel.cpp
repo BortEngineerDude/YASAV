@@ -2,6 +2,9 @@
 
 arraymodel::arraymodel(FILL_TYPE fillType, int size)
 {
+    idxA = 0;
+    idxB = 0;
+
     fill = fillType;
     if(size > MAX_MDL_SIZE)
     {
@@ -11,11 +14,12 @@ arraymodel::arraymodel(FILL_TYPE fillType, int size)
 
     refill();
 }
-void arraymodel::swap(int idxA, int idxB)
+void arraymodel::swap(int A, int B)
 {
-    int tmp = vect.at(idxA);
-    vect[idxA] = vect.at(idxB);
-    vect[idxB] = tmp;
+    int tmp = vect.at(A);
+    vect[A] = vect.at(B);
+    vect[B] = tmp;
+    emit changed();
 }
 void arraymodel::shuffle()
 {
@@ -49,6 +53,7 @@ void arraymodel::refill()
             }
         break;
     }
+    emit changed();
 }
 void arraymodel::setFillType(FILL_TYPE newFillType)
 {
@@ -56,7 +61,6 @@ void arraymodel::setFillType(FILL_TYPE newFillType)
     {
         fill = newFillType;
         refill();
-        emit changed();
     }
 }
 void arraymodel::setSize(int newSize)
@@ -74,7 +78,6 @@ void arraymodel::setSize(int newSize)
     {
         vect.resize(newSize);
         refill();
-        emit changed();
     }
 }
 FILL_TYPE arraymodel::fillType() const
