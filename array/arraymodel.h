@@ -23,17 +23,23 @@ class arraymodel: public QObject
 
 public:
     //arraymodel();
-    arraymodel(FILL_TYPE fill = FILL_TYPE::UNIQUE, int size = 100);
+    arraymodel(int size = 50, FILL_TYPE fill = FILL_TYPE::UNIQUE);
 
-    void swap(int idxA, int idxB);
+    void swap();
+    void setA(int A);
+    void setB(int B);
     void refill();
 
     FILL_TYPE fillType() const;
     int size() const;
     int max() const;
     int min() const;
+    int A() const;
+    int B() const;
 
-    int getElement(int element) const;
+    int elementA() const;
+    int elementB() const;
+    int element(int idx) const;
 
     ~arraymodel() = default;
 

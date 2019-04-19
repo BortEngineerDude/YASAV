@@ -2,7 +2,7 @@
 #define BUBBLE_H
 #include "array/arraymodel.h"
 
-enum bubble_step {BS_COMPARE,BS_SWAP};
+enum bubble_step {BS_COMPARE,BS_SWAP,BS_INCREMENT};
 
 class bubble : public QObject
 {
@@ -10,7 +10,6 @@ class bubble : public QObject
 
     arraymodel * model;
     bubble_step step;
-    int idx;
     int top;
     bool compareState;
     bool hasSwaps;

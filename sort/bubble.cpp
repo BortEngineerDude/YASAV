@@ -3,7 +3,6 @@
 bubble::bubble()
 {
     top = 0;
-    idx = 0;
     step = BS_COMPARE;
     hasSwaps = false;
     model = nullptr;
@@ -11,22 +10,52 @@ bubble::bubble()
 void bubble::setModel(arraymodel * newModel)
 {
     model = newModel;
-    top = model->size();
+    top = model->size()-1;
+    model->setA(-1);
+    model->setB(-1);
 }
 void bubble::reset()
 {
-    top = model->size();
-    idx = 0;
+    top = model->size()-1;
+    model->setA(-1);
+    model->setB(-1);
     step = BS_COMPARE;
     hasSwaps = false;
 }
 void bubble::advance()
 {
+    if(model->A() == -1)
+    {
+        model->setA(0);
+        model->setB(1);
+    }
+
     switch(step)
     {
     case BS_COMPARE:
     {
-        if( idx+1 >= top )
+        compareState = model->elementA() > model->elementB();
+        step = BS_SWAP;
+
+        break;
+    }
+
+    case BS_SWAP:
+    {
+        if(compareState)
+        {
+            model->swap();
+            hasSwaps = true;
+        }
+        step = BS_INCREMENT;
+        break;
+    }
+    case BS_INCREMENT:
+    {
+        model->setA(model->B());
+        model->setB(model->B()+1);
+
+        if( model->B() > top )
         {
             --top;
             if( top == 0 )
@@ -39,11 +68,14 @@ void bubble::advance()
             {
                 if(hasSwaps)
                 {
-                    idx = 0;
+                    model->setA(0);
+                    model->setB(1);
                     hasSwaps = false;
                 }
                 else
                 {
+                    model->setA(-1);
+                    model->setB(-1);
                     emit finished();
                     reset();
                     return;
@@ -51,20 +83,6 @@ void bubble::advance()
             }
         }
 
-        compareState = model->getElement(idx) > model->getElement(idx + 1);
-        step = BS_SWAP;
-
-        break;
-    }
-
-    case BS_SWAP:
-    {
-        if(compareState)
-        {
-            model->swap(idx, idx+1);
-            hasSwaps = true;
-        }
-        ++idx;
         step = BS_COMPARE;
         break;
     }

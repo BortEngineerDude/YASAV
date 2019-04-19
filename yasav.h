@@ -29,6 +29,7 @@ private:
 public slots:
     void updateArraySizeLabel(int newSize);
     void updateArrayFill(int newIndex);
+    void updateAutoTicker(int newMs);
     void toggleGoStop();
     void stop();
 };

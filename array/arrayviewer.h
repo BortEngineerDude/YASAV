@@ -7,6 +7,7 @@
 #include <QRect>
 #include <QLine>
 #include <QPaintEvent>
+#include <QColor>
 #include "arraymodel.h"
 
 #ifdef DEBUG
@@ -17,6 +18,8 @@ class arrayviewer : public QWidget
 {
     Q_OBJECT
     const arraymodel * model;
+    QColor colorA;
+    QColor colorB;
 
 public:
     explicit arrayviewer(QWidget *parent = 0);

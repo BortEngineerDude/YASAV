@@ -2,6 +2,8 @@
 
 arrayviewer::arrayviewer(QWidget *parent) : QWidget(parent)
 {
+    colorA = Qt::darkBlue;
+    colorB = Qt::darkRed;
 }
 void arrayviewer::setModel(const arraymodel *newModel)
 {
@@ -27,8 +29,6 @@ void arrayviewer::paintEvent(QPaintEvent *event)
     double base = width/2;
 
     pen.setWidthF(width);
-    pen.setColor(Qt::white);
-    p.setPen(pen);
 
 #ifdef DEBUG
     qDebug() << base << bottom << heightScale << bounds;
@@ -36,7 +36,21 @@ void arrayviewer::paintEvent(QPaintEvent *event)
 
     while( i < size )
     {
-        p.drawLine( QLineF ( base, bottom, base, bottom - (model->getElement(i) * heightScale ) ) );
+        if(i == model->A())
+        {
+            pen.setColor(colorA);
+        }
+        else if (i == model->B() )
+        {
+            pen.setColor(colorB);
+        }
+        else
+        {
+            pen.setColor(Qt::white);
+        }
+
+        p.setPen(pen);
+        p.drawLine( QLineF ( base, bottom, base, bottom - (model->element(i) * heightScale ) ) );
 
         ++i;
         base += width;

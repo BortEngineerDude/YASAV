@@ -1,9 +1,9 @@
 #include "arraymodel.h"
 
-arraymodel::arraymodel(FILL_TYPE fillType, int size)
+arraymodel::arraymodel(int size, FILL_TYPE fillType)
 {
-    idxA = 0;
-    idxB = 0;
+    idxA = -1;
+    idxB = -1;
 
     fill = fillType;
     if(size > MAX_MDL_SIZE)
@@ -14,12 +14,33 @@ arraymodel::arraymodel(FILL_TYPE fillType, int size)
 
     refill();
 }
-void arraymodel::swap(int A, int B)
+void arraymodel::swap()
 {
-    int tmp = vect.at(A);
-    vect[A] = vect.at(B);
-    vect[B] = tmp;
+    try
+    {
+        int tmp = vect.at(idxA);
+        vect[idxA] = vect.at(idxB);
+        vect[idxB] = tmp;
+    }
+    catch(...)
+    {
+        return;
+    }
     emit changed();
+}
+void arraymodel::setA(int A)
+{
+    if(A >= -1 && A <= vect.size())
+    {
+        idxA = A;
+    }
+}
+void arraymodel::setB(int B)
+{
+    if(B >= -1 && B <= vect.size())
+    {
+        idxB = B;
+    }
 }
 void arraymodel::shuffle()
 {
@@ -112,7 +133,50 @@ int arraymodel::min() const
     }
     return min;
 }
-int arraymodel::getElement(int element) const
+int arraymodel::A() const
 {
-    return vect.at(element);
+    return idxA;
+}
+int arraymodel::B() const
+{
+    return idxB;
+}
+int arraymodel::elementA() const
+{
+    int val = 0;
+    try
+    {
+        val = vect.at(idxA);
+    }
+    catch(...)
+    {
+        return 0;
+    }
+    return val;
+}
+int arraymodel::elementB() const
+{
+    int val = 0;
+    try
+    {
+        val = vect.at(idxB);
+    }
+    catch(...)
+    {
+        return 0;
+    }
+    return val;
+}
+int arraymodel::element(int idx) const
+{
+    int val = 0;
+    try
+    {
+        val = vect.at(idx);
+    }
+    catch(...)
+    {
+        return 0;
+    }
+    return val;
 }
