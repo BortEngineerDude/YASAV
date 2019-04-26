@@ -2,61 +2,61 @@
 
 arraymodel::arraymodel(int size, FILL_TYPE fillType)
 {
-    idxA = -1;
-    idxB = -1;
+    m_idxA = -1;
+    m_idxB = -1;
+    m_fill = fillType;
 
-    fill = fillType;
     if(size > MAX_MDL_SIZE)
     {
         size = MAX_MDL_SIZE;
     }
-    vect = QVector<int>(size,0);
+
+    m_top = -1;
+    m_vect = QVector<int>(size,0);
 
     refill();
 }
 void arraymodel::swap()
 {
-    try
-    {
-        int tmp = vect.at(idxA);
-        vect[idxA] = vect.at(idxB);
-        vect[idxB] = tmp;
-    }
-    catch(...)
-    {
-        return;
-    }
+    int tmp = m_vect.at(m_idxA);
+    m_vect[m_idxA] = m_vect.at(m_idxB);
+    m_vect[m_idxB] = tmp;
     emit changed();
 }
 void arraymodel::setA(int A)
 {
-    if(A >= -1 && A <= vect.size())
+    if(A >= -1 && A <= m_vect.size())
     {
-        idxA = A;
+        m_idxA = A;
     }
 }
 void arraymodel::setB(int B)
 {
-    if(B >= -1 && B <= vect.size())
+    if(B >= -1 && B <= m_vect.size())
     {
-        idxB = B;
+        m_idxB = B;
     }
+}
+void arraymodel::setTop(int top)
+{
+    m_top = top;
 }
 void arraymodel::shuffle()
 {
-    std::mt19937 g;
-    std::shuffle(vect.begin(), vect.end(), g);
+    std::mt19937 randomizer;
+    std::shuffle(m_vect.begin(), m_vect.end(), randomizer);
+    m_top = m_vect.size();
     emit changed();
 }
 void arraymodel::refill()
 {
-    int size = vect.size();
-    switch(fill)
+    int size = m_vect.size();
+    switch(m_fill)
     {
-        case FILL_TYPE::UNIQUE:
+        case FILL_TYPE::LINEAR:
             for(int i = 0; i < size; ++i)
             {
-                vect[i] = i+1;
+                m_vect[i] = i+1;
             }
         break;
         case FILL_TYPE::CUBIC:
@@ -65,12 +65,17 @@ void arraymodel::refill()
             for(int i = 0; i < size; ++i)
             {
                 int val = i - zeroOffset;
-                vect[i] = val*val*val;
+                m_vect[i] = pow(val,3);
                 if(!i)
                 {
-                    min = vect[0];
+                    min = m_vect[0];
                 }
-                vect[i] -= min;
+                m_vect[i] -= min;
+            }
+            int max = m_vect.last()/size;
+            for(int &val : m_vect)
+            {
+                val = val/max;
             }
         break;
     }
@@ -78,9 +83,9 @@ void arraymodel::refill()
 }
 void arraymodel::setFillType(FILL_TYPE newFillType)
 {
-    if(newFillType != fill)
+    if(newFillType != m_fill)
     {
-        fill = newFillType;
+        m_fill = newFillType;
         refill();
     }
 }
@@ -95,24 +100,24 @@ void arraymodel::setSize(int newSize)
         newSize = 0;
     }
 
-    if(vect.size() != newSize)
+    if(m_vect.size() != newSize)
     {
-        vect.resize(newSize);
+        m_vect.resize(newSize);
         refill();
     }
 }
 FILL_TYPE arraymodel::fillType() const
 {
-    return fill;
+    return m_fill;
 }
 int arraymodel::size() const
 {
-    return vect.size();
+    return m_vect.size();
 }
 int arraymodel::max() const
 {
-    int max = vect.at(0);
-    for( int val : vect )
+    int max = m_vect.at(0);
+    for( int val : m_vect )
     {
         if(val > max)
         {
@@ -123,8 +128,8 @@ int arraymodel::max() const
 }
 int arraymodel::min() const
 {
-    int min = vect.at(0);
-    for( int val : vect )
+    int min = m_vect.at(0);
+    for( int val : m_vect )
     {
         if(val < min)
         {
@@ -133,50 +138,24 @@ int arraymodel::min() const
     }
     return min;
 }
+
+int arraymodel::top() const
+{
+    return m_top;
+}
 int arraymodel::A() const
 {
-    return idxA;
+    return m_idxA;
 }
 int arraymodel::B() const
 {
-    return idxB;
+    return m_idxB;
 }
 int arraymodel::elementA() const
 {
-    int val = 0;
-    try
-    {
-        val = vect.at(idxA);
-    }
-    catch(...)
-    {
-        return 0;
-    }
-    return val;
+    return m_vect.at(m_idxA);
 }
 int arraymodel::elementB() const
 {
-    int val = 0;
-    try
-    {
-        val = vect.at(idxB);
-    }
-    catch(...)
-    {
-        return 0;
-    }
-    return val;
-}
-int arraymodel::element(int idx) const
-{
-    int val = 0;
-    try
-    {
-        val = vect.at(idx);
-    }
-    catch(...)
-    {
-        return 0;
-    }
-    return val;
+    return m_vect.at(m_idxB);
 }

@@ -4,8 +4,12 @@
 #include <QWidget>
 #include <QString>
 #include <QTimer>
+
 #include "array/arraymodel.h"
 #include "array/arrayviewer.h"
+
+#include "sort/sorter.h"
+#include "sort/selection.h"
 #include "sort/bubble.h"
 
 namespace Ui {
@@ -23,13 +27,15 @@ public:
 private:
     Ui::yasav *ui;
     arraymodel m;
-    bubble b;
-    QTimer autoticker;
+    sorter *s;
+    QTimer ticker;
+    void connectSorter();
 
-public slots:
+private slots:
     void updateArraySizeLabel(int newSize);
     void updateArrayFill(int newIndex);
-    void updateAutoTicker(int newMs);
+    void updateSorter(int newIndex);
+    void updateTicker(int newMs);
     void toggleGoStop();
     void stop();
 };

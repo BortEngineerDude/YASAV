@@ -20,6 +20,9 @@ class arrayviewer : public QWidget
     const arraymodel * model;
     QColor colorA;
     QColor colorB;
+    QColor colorDone;
+    QColor colorUnknown;
+    QColor colorBackground;
 
 public:
     explicit arrayviewer(QWidget *parent = 0);

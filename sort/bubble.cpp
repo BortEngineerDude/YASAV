@@ -2,21 +2,16 @@
 
 bubble::bubble()
 {
-    top = 0;
     step = BS_COMPARE;
     hasSwaps = false;
-    model = nullptr;
 }
-void bubble::setModel(arraymodel * newModel)
+SORT_TYPE bubble::sortType() const
 {
-    model = newModel;
-    top = model->size()-1;
-    model->setA(-1);
-    model->setB(-1);
+    return SORT_TYPE::BUBBLE;
 }
-void bubble::reset()
+void bubble::resetState()
 {
-    top = model->size()-1;
+    model->setTop(-1);
     model->setA(-1);
     model->setB(-1);
     step = BS_COMPARE;
@@ -26,6 +21,7 @@ void bubble::advance()
 {
     if(model->A() == -1)
     {
+        model->setTop(model->size());
         model->setA(0);
         model->setB(1);
     }
@@ -55,13 +51,13 @@ void bubble::advance()
         model->setA(model->B());
         model->setB(model->B()+1);
 
-        if( model->B() > top )
+        if( model->B() >= model->top() )
         {
-            --top;
-            if( top == 0 )
+            model->setTop(model->top() - 1);
+            if( model->top() <= 0 )
             {
+                resetState();
                 emit finished();
-                reset();
                 return;
             }
             else
@@ -74,10 +70,8 @@ void bubble::advance()
                 }
                 else
                 {
-                    model->setA(-1);
-                    model->setB(-1);
+                    resetState();
                     emit finished();
-                    reset();
                     return;
                 }
             }
@@ -87,8 +81,4 @@ void bubble::advance()
         break;
     }
     }
-}
-void bubble::updateModel()
-{
-    top = model->size();
 }

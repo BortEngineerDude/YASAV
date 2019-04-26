@@ -30,11 +30,15 @@ SOURCES += main.cpp\
         yasav.cpp \
     array/arraymodel.cpp \
     array/arrayviewer.cpp \
-    sort/bubble.cpp
+    sort/bubble.cpp \
+    sort/sorter.cpp \
+    sort/selection.cpp \
 
 HEADERS  += yasav.h \
     array/arraymodel.h \
     array/arrayviewer.h \
-    sort/bubble.h
+    sort/bubble.h \
+    sort/sorter.h \
+    sort/selection.h \
 
 FORMS    += yasav.ui
