@@ -16,30 +16,15 @@ yasav::yasav(QWidget *parent) :
 
     ticker.setInterval(ui->spinBoxTiming->value());
 
-    m.setSize( ui->horizontalSliderArraySize->value());
     m.setFillType( static_cast<FILL_TYPE>( ui->comboBoxArrayInit->itemData(0).toInt()) );
+    m.setSize( ui->horizontalSliderArraySize->value());
+
     ui->viewer->setModel(&m);
     s->setModel(&m);
 
     connect(ui->pushButtonShuffle, SIGNAL(released()), &m, SLOT(shuffle()));
-    connect(ui->pushButtonShuffle, SIGNAL(released()), this, SLOT(stop()));
-
     connect(ui->horizontalSliderArraySize, SIGNAL(valueChanged(int)), &m, SLOT(setSize(int)));
-    connect(ui->horizontalSliderArraySize, SIGNAL(valueChanged(int)), this, SLOT(stop()));
-
     connect(&m, SIGNAL(changed()), ui->viewer, SLOT(repaint()));
-
-    connect(ui->comboBoxArrayInit, SIGNAL(currentIndexChanged(int)), this, SLOT(updateArrayFill(int)));
-
-    connect(ui->comboBoxSortingAlgorithm, SIGNAL(currentIndexChanged(int)), this, SLOT(updateSorter(int)));
-    connect(ui->comboBoxSortingAlgorithm, SIGNAL(currentIndexChanged(int)), this, SLOT(stop()));
-
-    connect(ui->pushButtonStep, SIGNAL(released()), this, SLOT(repaint()));
-    connect(ui->pushButtonStep, SIGNAL(released()), this, SLOT(stop()));
-    connect(ui->pushButtonGoStop, SIGNAL(pressed()), this, SLOT(toggleGoStop()));
-
-    connect(&ticker, SIGNAL(timeout()), this, SLOT(repaint()));
-    connect(ui->spinBoxTiming, SIGNAL(valueChanged(int)), this, SLOT(updateTicker(int)));
 
     connectSorter();
 }
@@ -57,7 +42,7 @@ void yasav::connectSorter()
     connect(ui->pushButtonStep, SIGNAL(released()), s, SLOT(advance()));
     connect(&ticker, SIGNAL(timeout()), s, SLOT(advance()));
     connect(s, SIGNAL(finished()), this, SLOT(stop()));
-    connect(s, SIGNAL(finished()), this, SLOT(repaint()));
+    connect(s, SIGNAL(stepDone()), this, SLOT(repaint()));
 }
 void yasav::updateArraySizeLabel(int newSize)
 {
@@ -94,7 +79,7 @@ void yasav::updateTicker(int newMs)
 }
 void yasav::toggleGoStop()
 {
-    if(ui->pushButtonGoStop->isChecked())
+    if(ticker.isActive())
     {
         stop();
     }

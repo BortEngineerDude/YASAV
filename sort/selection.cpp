@@ -3,8 +3,8 @@
 selection::selection()
 {
     step = SS_COMPARE;
-    maxAddr = -1;
-    maxVal = -1;
+    minAddr = -1;
+    minVal = -1;
 }
 SORT_TYPE selection::sortType() const
 {
@@ -14,69 +14,73 @@ void selection::advance()
 {
     if(model->A() == -1)
     {
-        model->setTop(model->size());
-        model->setA(model->size()-1);
-        model->setB(model->size()-2);
-        maxVal = model->elementA();
-        maxAddr = -1;
+        model->m_complete.setPoint(0);
+        model->setA(0);
+        model->setB(1);
+        minVal = model->elementA();
+        minAddr = -1;
     }
 
     switch(step)
     {
     case SS_COMPARE:
     {
-        if(model->elementB() > maxVal)
+        if(model->elementB() < minVal)
         {
-            maxAddr = model->B();
-            maxVal = model->elementB();
+            minAddr = model->B();
+            minVal = model->elementB();
         }
 
         step = SS_INCREMENT;
+        emit stepDone();
         break;
     }
     case SS_INCREMENT:
     {
-        model->setB(model->B() - 1);
+        model->setB(model->B() + 1);
 
-        if(model->B() < 0)
+        if(model->B() >= model->size())
         {
-            model->setB(maxAddr);
+            model->setB(minAddr);
             step = SS_SWAP;
         }
         else
         {
             step = SS_COMPARE;
         }
+        emit stepDone();
         break;
     }
     case SS_SWAP:
     {
-        if( maxAddr >= 0)
+        if( minAddr >= 0)
         {
             model->swap();
         }
-        model->setTop(model->A());
-        model->setA(model->A() - 1);
-        model->setB(model->A() - 1);
+        model->m_complete.setEnd(model->A());
+        model->setA(model->A() + 1);
+        model->setB(model->A() + 1);
 
-        if(model->A() == 0)
+        if(model->A() >= model->size() - 1)
         {
             resetState();
+            model->m_complete.setRange(0,model->size());
             emit finished();
         }
         else
         {
-            maxAddr = model->A();
-            maxVal = model->elementA();
+            minAddr = model->A();
+            minVal = model->elementA();
             step = SS_COMPARE;
         }
+        emit stepDone();
+        emit iterationDone();
         break;
     }
     }
 }
 void selection::resetState()
 {
-    model->setTop(-1);
     model->setA(-1);
     model->setB(-1);
     step = SS_COMPARE;

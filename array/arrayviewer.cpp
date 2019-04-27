@@ -47,7 +47,7 @@ void arrayviewer::paintEvent(QPaintEvent *event)
         {
             pen.setColor(colorB);
         }
-        else if( i >= model->m_top )
+        else if( model->m_complete.inRange(i) )
         {
             pen.setColor(colorDone);
         }

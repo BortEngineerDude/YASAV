@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <math.h>
 #include <random>
+#include "range.h"
 
 enum class FILL_TYPE{LINEAR,CUBIC};
 
@@ -21,12 +22,11 @@ class arraymodel: public QObject
 
     QVector<int> m_vect;
     FILL_TYPE m_fill;
-
     int m_idxA;
     int m_idxB;
-    int m_top;
 
 public:
+    range<int> m_complete;
     //arraymodel();
     arraymodel(int size = 50, FILL_TYPE fill = FILL_TYPE::LINEAR);
 

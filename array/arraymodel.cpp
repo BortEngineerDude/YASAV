@@ -11,8 +11,8 @@ arraymodel::arraymodel(int size, FILL_TYPE fillType)
         size = MAX_MDL_SIZE;
     }
 
-    m_top = -1;
     m_vect = QVector<int>(size,0);
+    m_complete = range<int>(0, size);
 
     refill();
 }
@@ -21,7 +21,7 @@ void arraymodel::swap()
     int tmp = m_vect.at(m_idxA);
     m_vect[m_idxA] = m_vect.at(m_idxB);
     m_vect[m_idxB] = tmp;
-    emit changed();
+    //emit changed();
 }
 void arraymodel::setA(int A)
 {
@@ -37,15 +37,11 @@ void arraymodel::setB(int B)
         m_idxB = B;
     }
 }
-void arraymodel::setTop(int top)
-{
-    m_top = top;
-}
 void arraymodel::shuffle()
 {
     std::mt19937 randomizer;
     std::shuffle(m_vect.begin(), m_vect.end(), randomizer);
-    m_top = m_vect.size();
+    m_complete.setPoint(-1);
     emit changed();
 }
 void arraymodel::refill()
@@ -79,6 +75,7 @@ void arraymodel::refill()
             }
         break;
     }
+    m_complete.setRange(0,size);
     emit changed();
 }
 void arraymodel::setFillType(FILL_TYPE newFillType)
@@ -137,11 +134,6 @@ int arraymodel::min() const
         }
     }
     return min;
-}
-
-int arraymodel::top() const
-{
-    return m_top;
 }
 int arraymodel::A() const
 {

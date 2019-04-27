@@ -1,9 +1,5 @@
 #include "sorter.h"
 
-sorter::sorter()
-{
-
-}
 sorter::sorter(arraymodel * newModel)
 {
     model = newModel;

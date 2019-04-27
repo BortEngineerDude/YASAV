@@ -11,7 +11,6 @@ SORT_TYPE bubble::sortType() const
 }
 void bubble::resetState()
 {
-    model->setTop(-1);
     model->setA(-1);
     model->setB(-1);
     step = BS_COMPARE;
@@ -21,7 +20,7 @@ void bubble::advance()
 {
     if(model->A() == -1)
     {
-        model->setTop(model->size());
+        model->m_complete.setPoint(model->size());
         model->setA(0);
         model->setB(1);
     }
@@ -32,6 +31,7 @@ void bubble::advance()
     {
         compareState = model->elementA() > model->elementB();
         step = BS_SWAP;
+        emit stepDone();
 
         break;
     }
@@ -44,6 +44,8 @@ void bubble::advance()
             hasSwaps = true;
         }
         step = BS_INCREMENT;
+        emit stepDone();
+
         break;
     }
     case BS_INCREMENT:
@@ -51,12 +53,15 @@ void bubble::advance()
         model->setA(model->B());
         model->setB(model->B()+1);
 
-        if( model->B() >= model->top() )
+        if( model->B() >= model->m_complete.begin() )
         {
-            model->setTop(model->top() - 1);
-            if( model->top() <= 0 )
+            model->m_complete.setBegin(model->m_complete.begin() - 1);
+            if( model->m_complete.begin() <= 0 )
             {
                 resetState();
+                model->m_complete.setRange(0,model->size());
+
+                emit stepDone();
                 emit finished();
                 return;
             }
@@ -67,10 +72,13 @@ void bubble::advance()
                     model->setA(0);
                     model->setB(1);
                     hasSwaps = false;
+                    emit iterationDone();
                 }
                 else
                 {
                     resetState();
+                    model->m_complete.setRange(0,model->size());
+                    emit stepDone();
                     emit finished();
                     return;
                 }
@@ -78,6 +86,8 @@ void bubble::advance()
         }
 
         step = BS_COMPARE;
+        emit stepDone();
+
         break;
     }
     }

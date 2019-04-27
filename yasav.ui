@@ -205,8 +205,141 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButtonShuffle</sender>
+   <signal>released()</signal>
+   <receiver>yasav</receiver>
+   <slot>stop()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>858</x>
+     <y>277</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>899</x>
+     <y>290</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSliderArraySize</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>yasav</receiver>
+   <slot>stop()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>801</x>
+     <y>240</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>896</x>
+     <y>220</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboBoxArrayInit</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>yasav</receiver>
+   <slot>updateArrayFill(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>863</x>
+     <y>172</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>900</x>
+     <y>126</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonGoStop</sender>
+   <signal>clicked()</signal>
+   <receiver>yasav</receiver>
+   <slot>toggleGoStop()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>770</x>
+     <y>66</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>898</x>
+     <y>57</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonStep</sender>
+   <signal>released()</signal>
+   <receiver>yasav</receiver>
+   <slot>stop()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>859</x>
+     <y>64</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>901</x>
+     <y>18</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinBoxTiming</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>yasav</receiver>
+   <slot>updateTicker(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>828</x>
+     <y>103</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>896</x>
+     <y>94</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboBoxSortingAlgorithm</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>yasav</receiver>
+   <slot>updateSorter(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>863</x>
+     <y>360</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>897</x>
+     <y>357</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboBoxSortingAlgorithm</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>yasav</receiver>
+   <slot>stop()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>849</x>
+     <y>339</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>897</x>
+     <y>329</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>updateArraySizeLabel(int)</slot>
+  <slot>stop()</slot>
+  <slot>updateArrayFill(int)</slot>
+  <slot>toggleGoStop()</slot>
+  <slot>updateTicker(int)</slot>
+  <slot>updateSorter(int)</slot>
  </slots>
 </ui>

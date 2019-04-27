@@ -12,7 +12,7 @@ protected:
     arraymodel * model;
 
 public:
-    sorter();
+    sorter() = default;
     sorter(arraymodel * model);
     void setModel(arraymodel * newModel);
     virtual SORT_TYPE sortType() const = 0;
@@ -23,7 +23,8 @@ public slots:
     virtual void resetState() = 0;
 
 signals:
-
+    void stepDone();
+    void iterationDone();
     void finished();
 };
 
