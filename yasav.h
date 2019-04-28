@@ -11,6 +11,7 @@
 #include "sort/sorter.h"
 #include "sort/selection.h"
 #include "sort/bubble.h"
+#include "sort/insertion.h"
 
 namespace Ui {
 class yasav;

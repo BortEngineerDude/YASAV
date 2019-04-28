@@ -61,9 +61,7 @@ void bubble::advance()
                 resetState();
                 model->m_complete.setRange(0,model->size());
 
-                emit stepDone();
                 emit finished();
-                return;
             }
             else
             {
@@ -78,9 +76,7 @@ void bubble::advance()
                 {
                     resetState();
                     model->m_complete.setRange(0,model->size());
-                    emit stepDone();
                     emit finished();
-                    return;
                 }
             }
         }

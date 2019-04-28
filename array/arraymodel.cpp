@@ -49,32 +49,56 @@ void arraymodel::refill()
     int size = m_vect.size();
     switch(m_fill)
     {
-        case FILL_TYPE::LINEAR:
-            for(int i = 0; i < size; ++i)
-            {
-                m_vect[i] = i+1;
-            }
-        break;
-        case FILL_TYPE::CUBIC:
-            int zeroOffset = size / 2;
-            int min = 0;
-            for(int i = 0; i < size; ++i)
-            {
-                int val = i - zeroOffset;
-                m_vect[i] = pow(val,3);
-                if(!i)
-                {
-                    min = m_vect[0];
-                }
-                m_vect[i] -= min;
-            }
-            int max = m_vect.last()/size;
-            for(int &val : m_vect)
-            {
-                val = val/max;
-            }
+    case FILL_TYPE::LINEAR:
+    {
+        for(int i = 0; i < size; ++i)
+        {
+            m_vect[i] = i+1;
+        }
         break;
     }
+    case FILL_TYPE::CUBIC:
+    {
+        int zeroOffset = size / 2;
+        int min = 0;
+        for(int i = 0; i < size; ++i)
+        {
+            int val = i - zeroOffset;
+            m_vect[i] = pow(val,3);
+            if(!i)
+            {
+                min = m_vect[0];
+            }
+            m_vect[i] -= min;
+        }
+        int max = m_vect.last()/size;
+        for(int &val : m_vect)
+        {
+            val = val/max;
+        }
+        break;
+    }
+    case FILL_TYPE::ONE_ODD:
+    {
+        for(int &val : m_vect)
+        {
+            val = 1;
+        }
+        m_vect.last() = 2;
+        break;
+    }
+    case FILL_TYPE::LINEAR_INVERSE:
+    {
+        for(int i = size - 1; i >= 0; --i)
+        {
+            m_vect[i] = size - i;
+        }
+        m_complete.setPoint(-1);
+        emit changed();
+        return;//special case
+    }
+    }
+
     m_complete.setRange(0,size);
     emit changed();
 }

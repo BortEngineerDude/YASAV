@@ -2,7 +2,7 @@
 #define SORTER_H
 #include "array/arraymodel.h"
 
-enum class SORT_TYPE{BUBBLE,SELECTION};
+enum class SORT_TYPE{BUBBLE,SELECTION,INSERTION};
 
 class sorter : public QObject
 {

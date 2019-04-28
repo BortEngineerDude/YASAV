@@ -10,9 +10,12 @@ yasav::yasav(QWidget *parent) :
 
     ui->comboBoxArrayInit->addItem(QObject::tr("Linear fill"), QVariant(static_cast<int>(FILL_TYPE::LINEAR)));
     ui->comboBoxArrayInit->addItem(QObject::tr("Cubic fill"), QVariant(static_cast<int>(FILL_TYPE::CUBIC)));
+    ui->comboBoxArrayInit->addItem(QObject::tr("'One odd' fill"), QVariant(static_cast<int>(FILL_TYPE::ONE_ODD)));
+    ui->comboBoxArrayInit->addItem(QObject::tr("Inverse linear fill"), QVariant(static_cast<int>(FILL_TYPE::LINEAR_INVERSE)));
 
     ui->comboBoxSortingAlgorithm->addItem(QObject::tr("Bubble sort"), QVariant(static_cast<int>(SORT_TYPE::BUBBLE)));
     ui->comboBoxSortingAlgorithm->addItem(QObject::tr("Selection sort"), QVariant(static_cast<int>(SORT_TYPE::SELECTION)));
+    ui->comboBoxSortingAlgorithm->addItem(QObject::tr("Insertion sort"), QVariant(static_cast<int>(SORT_TYPE::INSERTION)));
 
     ticker.setInterval(ui->spinBoxTiming->value());
 
@@ -67,6 +70,9 @@ void yasav::updateSorter(int newIndex)
             break;
         case SORT_TYPE::SELECTION:
             s = new selection();
+            break;
+        case SORT_TYPE::INSERTION:
+            s = new insertion();
             break;
         }
         s->setModel(&m);

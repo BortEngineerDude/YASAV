@@ -12,7 +12,7 @@
 #include <random>
 #include "range.h"
 
-enum class FILL_TYPE{LINEAR,CUBIC};
+enum class FILL_TYPE{LINEAR,CUBIC,ONE_ODD,LINEAR_INVERSE};
 
 class arraymodel: public QObject
 {
