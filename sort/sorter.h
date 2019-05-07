@@ -1,6 +1,8 @@
 #ifndef SORTER_H
 #define SORTER_H
 #include "array/arraymodel.h"
+#include <QString>
+#include <QTextStream>
 
 enum class SORT_TYPE{BUBBLE,SELECTION,INSERTION};
 
@@ -10,13 +12,16 @@ class sorter : public QObject
 
 protected:
     arraymodel * model;
+    QString state;
+    QTextStream stateStream;
 
 public:
-    sorter() = default;
+    sorter();
     sorter(arraymodel * model);
     void setModel(arraymodel * newModel);
     virtual SORT_TYPE sortType() const = 0;
     virtual ~sorter() = default;
+    const QString& getState() const;
 
 public slots:
     virtual void advance() = 0;

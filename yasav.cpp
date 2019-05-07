@@ -8,6 +8,14 @@ yasav::yasav(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    QPalette temp(ui->labelA->palette());
+
+    temp.setColor(QPalette::Foreground, QColor(COLOR_A));
+    ui->labelA->setPalette(temp);
+
+    temp.setColor(QPalette::Foreground, QColor(COLOR_B));
+    ui->labelB->setPalette(temp);
+
     ui->comboBoxArrayInit->addItem(QObject::tr("Linear fill"), QVariant(static_cast<int>(FILL_TYPE::LINEAR)));
     ui->comboBoxArrayInit->addItem(QObject::tr("Cubic fill"), QVariant(static_cast<int>(FILL_TYPE::CUBIC)));
     ui->comboBoxArrayInit->addItem(QObject::tr("'One odd' fill"), QVariant(static_cast<int>(FILL_TYPE::ONE_ODD)));
@@ -28,6 +36,8 @@ yasav::yasav(QWidget *parent) :
     connect(ui->pushButtonShuffle, SIGNAL(released()), &m, SLOT(shuffle()));
     connect(ui->horizontalSliderArraySize, SIGNAL(valueChanged(int)), &m, SLOT(setSize(int)));
     connect(&m, SIGNAL(changed()), ui->viewer, SLOT(repaint()));
+    //connect(&ticker, SIGNAL(timeout()), this, SLOT(updateStats()));
+    //connect(ui->pushButtonStep, SIGNAL(released()), this, SLOT(updateStats()));
 
     connectSorter();
 }
@@ -46,6 +56,7 @@ void yasav::connectSorter()
     connect(&ticker, SIGNAL(timeout()), s, SLOT(advance()));
     connect(s, SIGNAL(finished()), this, SLOT(stop()));
     connect(s, SIGNAL(stepDone()), this, SLOT(repaint()));
+    connect(s, SIGNAL(stepDone()), this, SLOT(updateStats()));
 }
 void yasav::updateArraySizeLabel(int newSize)
 {
@@ -82,6 +93,20 @@ void yasav::updateSorter(int newIndex)
 void yasav::updateTicker(int newMs)
 {
     ticker.setInterval(newMs);
+}
+void yasav::updateStats()
+{
+    QString label;
+    QTextStream outStr(&label);
+
+    outStr << "A [ " << m.A() << " ] = " << m.elementA();
+    ui->labelA->setText(label);
+
+    label.clear();
+    outStr << "B [ " << m.B() << " ] = " << m.elementB();
+    ui->labelB->setText(label);
+
+    ui->labelNextStep->setText(s->getState());
 }
 void yasav::toggleGoStop()
 {

@@ -2,11 +2,11 @@
 
 arrayviewer::arrayviewer(QWidget *parent) : QWidget(parent)
 {
-    colorA = QColor(0x3f,0x51,0xb5);
-    colorB = QColor(0xfb,0x8c,0);
-    colorDone = QColor(0x4c, 0x8c, 0x4a);
-    colorUnknown = Qt::lightGray;
-    colorBackground = QColor(0x26,0x32, 0x38);
+    colorA = QColor(COLOR_A);
+    colorB = QColor(COLOR_B);
+    colorDone = QColor(COLOR_DONE);
+    colorUnknown = QColor(COLOR_UNKNOWN);
+    colorBackground = QColor(COLOR_BACKGR);
 }
 void arrayviewer::setModel(const arraymodel *newModel)
 {

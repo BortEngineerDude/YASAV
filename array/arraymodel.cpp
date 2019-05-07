@@ -169,9 +169,17 @@ int arraymodel::B() const
 }
 int arraymodel::elementA() const
 {
-    return m_vect.at(m_idxA);
+    if(m_idxA >= 0 && m_idxA <= m_vect.size())
+    {
+        return m_vect.at(m_idxA); //QVector does NOT use exceptions!
+    }
+    return -1;
 }
 int arraymodel::elementB() const
 {
-    return m_vect.at(m_idxB);
+    if(m_idxB >= 0 && m_idxB <= m_vect.size())
+    {
+        return m_vect.at(m_idxB);
+    }
+    return -1;
 }

@@ -9,6 +9,7 @@ class bubble : public sorter
     bubble_step step;
     bool compareState;
     bool hasSwaps;
+    void makeSwapsString();
 
 public:
     bubble();

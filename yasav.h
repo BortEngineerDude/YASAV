@@ -3,7 +3,10 @@
 
 #include <QWidget>
 #include <QString>
+#include <QTextStream>
 #include <QTimer>
+#include <QPalette>
+
 
 #include "array/arraymodel.h"
 #include "array/arrayviewer.h"
@@ -37,6 +40,7 @@ private slots:
     void updateArrayFill(int newIndex);
     void updateSorter(int newIndex);
     void updateTicker(int newMs);
+    void updateStats();
     void toggleGoStop();
     void stop();
 };
