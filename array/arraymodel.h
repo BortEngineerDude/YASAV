@@ -37,6 +37,7 @@ public:
     void refill();
 
     FILL_TYPE fillType() const;
+    bool compare() const;
     int size() const;
     int max() const;
     int min() const;

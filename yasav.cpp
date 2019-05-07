@@ -8,26 +8,34 @@ yasav::yasav(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QPalette temp(ui->labelA->palette());
+    ui->comboBoxArrayInit->addItem(
+                QObject::tr("Linear fill"),
+                QVariant(static_cast<int>(FILL_TYPE::LINEAR)));
+    ui->comboBoxArrayInit->addItem(
+                QObject::tr("Cubic fill"),
+                QVariant(static_cast<int>(FILL_TYPE::CUBIC)));
+    ui->comboBoxArrayInit->addItem(
+                QObject::tr("'One odd' fill"),
+                QVariant(static_cast<int>(FILL_TYPE::ONE_ODD)));
+    ui->comboBoxArrayInit->addItem(
+                QObject::tr("Inverse linear fill"),
+                QVariant(static_cast<int>(FILL_TYPE::LINEAR_INVERSE)));
 
-    temp.setColor(QPalette::Foreground, QColor(COLOR_A));
-    ui->labelA->setPalette(temp);
-
-    temp.setColor(QPalette::Foreground, QColor(COLOR_B));
-    ui->labelB->setPalette(temp);
-
-    ui->comboBoxArrayInit->addItem(QObject::tr("Linear fill"), QVariant(static_cast<int>(FILL_TYPE::LINEAR)));
-    ui->comboBoxArrayInit->addItem(QObject::tr("Cubic fill"), QVariant(static_cast<int>(FILL_TYPE::CUBIC)));
-    ui->comboBoxArrayInit->addItem(QObject::tr("'One odd' fill"), QVariant(static_cast<int>(FILL_TYPE::ONE_ODD)));
-    ui->comboBoxArrayInit->addItem(QObject::tr("Inverse linear fill"), QVariant(static_cast<int>(FILL_TYPE::LINEAR_INVERSE)));
-
-    ui->comboBoxSortingAlgorithm->addItem(QObject::tr("Bubble sort"), QVariant(static_cast<int>(SORT_TYPE::BUBBLE)));
-    ui->comboBoxSortingAlgorithm->addItem(QObject::tr("Selection sort"), QVariant(static_cast<int>(SORT_TYPE::SELECTION)));
-    ui->comboBoxSortingAlgorithm->addItem(QObject::tr("Insertion sort"), QVariant(static_cast<int>(SORT_TYPE::INSERTION)));
+    ui->comboBoxSortingAlgorithm->addItem(
+                QObject::tr("Bubble sort"),
+                QVariant(static_cast<int>(SORT_TYPE::BUBBLE)));
+    ui->comboBoxSortingAlgorithm->addItem(
+                QObject::tr("Selection sort"),
+                QVariant(static_cast<int>(SORT_TYPE::SELECTION)));
+    ui->comboBoxSortingAlgorithm->addItem(
+                QObject::tr("Insertion sort"),
+                QVariant(static_cast<int>(SORT_TYPE::INSERTION)));
 
     ticker.setInterval(ui->spinBoxTiming->value());
 
-    m.setFillType( static_cast<FILL_TYPE>( ui->comboBoxArrayInit->itemData(0).toInt()) );
+    m.setFillType(static_cast<FILL_TYPE>(
+                      ui->comboBoxArrayInit->itemData(0).toInt()) );
+
     m.setSize( ui->horizontalSliderArraySize->value());
 
     ui->viewer->setModel(&m);
@@ -36,8 +44,6 @@ yasav::yasav(QWidget *parent) :
     connect(ui->pushButtonShuffle, SIGNAL(released()), &m, SLOT(shuffle()));
     connect(ui->horizontalSliderArraySize, SIGNAL(valueChanged(int)), &m, SLOT(setSize(int)));
     connect(&m, SIGNAL(changed()), ui->viewer, SLOT(repaint()));
-    //connect(&ticker, SIGNAL(timeout()), this, SLOT(updateStats()));
-    //connect(ui->pushButtonStep, SIGNAL(released()), this, SLOT(updateStats()));
 
     connectSorter();
 }
@@ -65,7 +71,10 @@ void yasav::updateArraySizeLabel(int newSize)
 }
 void yasav::updateArrayFill(int newIndex)
 {
-    m.setFillType( static_cast<FILL_TYPE>( ui->comboBoxArrayInit->itemData(newIndex).toInt()) ); //this is LAME
+    //super lame stuff
+    m.setFillType(
+                static_cast<FILL_TYPE>(
+                    ui->comboBoxArrayInit->itemData(newIndex).toInt()) );
 }
 void yasav::updateSorter(int newIndex)
 {
@@ -96,16 +105,6 @@ void yasav::updateTicker(int newMs)
 }
 void yasav::updateStats()
 {
-    QString label;
-    QTextStream outStr(&label);
-
-    outStr << "A [ " << m.A() << " ] = " << m.elementA();
-    ui->labelA->setText(label);
-
-    label.clear();
-    outStr << "B [ " << m.B() << " ] = " << m.elementB();
-    ui->labelB->setText(label);
-
     ui->labelNextStep->setText(s->getState());
 }
 void yasav::toggleGoStop()

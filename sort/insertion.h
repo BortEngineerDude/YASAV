@@ -3,12 +3,11 @@
 
 #include "sorter.h"
 
-enum insertion_step {IS_COMPARE,IS_MOVE,IS_DECREMENT,IS_INCREMENT};
+enum class insertion_step {COMPARE,MOVE,DECREMENT,INCREMENT};
 
 class insertion : public sorter
 {
     insertion_step step;
-    bool compareState;
 
 public:
     insertion();

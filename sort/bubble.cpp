@@ -2,7 +2,7 @@
 
 void bubble::makeSwapsString()
 {
-    stateStream << QObject::tr("Swaps were done? ");
+    stateStream << QObject::tr("Swaps were done?: ");
     if(hasSwaps)
     {
         stateStream << QObject::tr("true");
@@ -16,7 +16,7 @@ void bubble::makeSwapsString()
 
 bubble::bubble()
 {
-    step = BS_COMPARE;
+    step = bubble_step::COMPARE;
     hasSwaps = false;
 }
 SORT_TYPE bubble::sortType() const
@@ -28,7 +28,7 @@ void bubble::resetState()
     model->setA(-1);
     model->setB(-1);
     state.clear();
-    step = BS_COMPARE;
+    step = bubble_step::COMPARE;
     hasSwaps = false;
 }
 void bubble::advance()
@@ -42,48 +42,47 @@ void bubble::advance()
 
     switch(step)
     {
-    case BS_COMPARE:
-    {
-        compareState = model->elementA() > model->elementB();
-        step = BS_SWAP;
-
-        state.clear();
-        makeSwapsString();
-
-        stateStream << "A > B = \n" << (compareState ? QObject::tr("true") : QObject::tr("false")) << ".\n";
-        stateStream << QObject::tr("\nNext step:\nswap A and B.");
-
-        emit stepDone();
-
-        break;
-    }
-
-    case BS_SWAP:
+    case bubble_step::COMPARE:
     {
         state.clear();
         makeSwapsString();
 
-        if(compareState)
+        stateStream << "A > B = \n";
+        if(model->compare())
         {
-            model->swap();
-            hasSwaps = true;
-
-            stateStream << QObject::tr("A > B =>\nswap A and B.\n");
+            stateStream << QObject::tr("true") << ".\n";
+            stateStream << QObject::tr("\nNext step:\nswap A and B.");
+            step = bubble_step::SWAP;
         }
         else
         {
-            stateStream << QObject::tr("A < B =>\nno swaps necessary.\n");
+            stateStream << QObject::tr("false") << ".\n";
+            stateStream << QObject::tr("\nNext step:\nincrement [A] and [B]");
+            step = bubble_step::INCREMENT;
         }
-
-        step = BS_INCREMENT;
-
-        stateStream << QObject::tr("\nNext step:\nincrement [A] and [B]");
 
         emit stepDone();
 
         break;
     }
-    case BS_INCREMENT:
+
+    case bubble_step::SWAP:
+    {
+        state.clear();
+        makeSwapsString();
+
+        model->swap();
+        hasSwaps = true;
+
+        stateStream << QObject::tr("A > B =>\nswap A and B.\n");
+        stateStream << QObject::tr("\nNext step:\nincrement [A] and [B]");
+        step = bubble_step::INCREMENT;
+
+        emit stepDone();
+
+        break;
+    }
+    case bubble_step::INCREMENT:
     {
         model->setA(model->B());
         model->setB(model->B()+1);
@@ -120,7 +119,7 @@ void bubble::advance()
                     resetState();
                     model->m_complete.setRange(0,model->size());
 
-                    stateStream << QObject::tr("No swaps =>\nsorting finished.");
+                    stateStream << QObject::tr("No swaps=>\nsorting finished.");
 
                     emit stepDone();
                     emit finished();
@@ -129,9 +128,8 @@ void bubble::advance()
             }
         }
 
-        step = BS_COMPARE;
-
         stateStream << QObject::tr("\nNext step:\ncompare A and B.");
+        step = bubble_step::COMPARE;
 
         emit stepDone();
 

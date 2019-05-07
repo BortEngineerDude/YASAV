@@ -2,7 +2,7 @@
 
 insertion::insertion()
 {
-    step = IS_COMPARE;
+    step = insertion_step::COMPARE;
 }
 SORT_TYPE insertion::sortType() const
 {
@@ -20,60 +20,90 @@ void insertion::advance()
 
     switch(step)
     {
-    case IS_COMPARE:
+    case insertion_step::COMPARE:
     {
-        compareState = model->elementA() > model->elementB();
-        step = IS_MOVE;
-        emit stepDone();
+        state.clear();
+        stateStream << "A > B = \n";
 
-        break;
-    }
-    case IS_MOVE:
-    {
-        if(compareState)
+        if(model->compare())
         {
-            model->swap();
-            step = IS_DECREMENT;
+            stateStream << QObject::tr("true") << ".\n";
+            stateStream << QObject::tr("\nNext step:\nswap A and B.");
+            step = insertion_step::MOVE;
         }
         else
         {
-            step = IS_INCREMENT;
+            stateStream << QObject::tr("false") << ".\n";
+            stateStream << QObject::tr("\nNext step:\ngo to unsorted values.");
+            step = insertion_step::INCREMENT;
         }
+
         emit stepDone();
 
         break;
     }
-    case IS_DECREMENT:
+    case insertion_step::MOVE:
+    {
+        model->swap();
+
+        state.clear();
+        stateStream << QObject::tr("A > B =>\nswap A and B.\n");
+        stateStream << QObject::tr("\nNext step:\ndecrement [A] and [B]");
+        step = insertion_step::DECREMENT;
+
+        emit stepDone();
+
+        break;
+    }
+    case insertion_step::DECREMENT:
     {
         model->setB( model->A() );
         model->setA( model->A() - 1 );
+
+        state.clear();
+        stateStream << "[B] = [A],\n[A] = [A] - 1.\n";
+
         if(model->A() == -1)
         {
             model->setA(0);
-            step = IS_INCREMENT;
+            step = insertion_step::INCREMENT;
+            stateStream << QObject::tr("\nNext step:\nincrement [A] and [B].");
         }
         else
         {
-            step = IS_COMPARE;
+            step = insertion_step::COMPARE;
+            stateStream << QObject::tr("\nNext step:\ncompare A and B.");
         }
         emit stepDone();
         break;
     }
 
-    case IS_INCREMENT:
+    case insertion_step::INCREMENT:
     {
         model->m_complete.setEnd(model->m_complete.end()+1);
         model->setB(model->m_complete.end());
         model->setA(model->B()-1);
 
+        state.clear();
+        stateStream << "[B] = " << model->B();
+        stateStream << "\n[A] = [B] - 1\n";
+
+        emit iterationDone();
+
+        step = insertion_step::COMPARE;
+
         if(model->B() >= model->size())
         {
             resetState();
+            stateStream << QObject::tr("Reached end =>\nsorting finished.");
+            emit stepDone();
             emit finished();
+            return;
         }
-        step = IS_COMPARE;
-        emit iterationDone();
+
+        stateStream << QObject::tr("\nNext step:\ncompare A and B.");
         emit stepDone();
+
         break;
     }
     }
@@ -82,5 +112,6 @@ void insertion::resetState()
 {
     model->setA(-1);
     model->setB(-1);
-    step = IS_COMPARE;
+    state.clear();
+    step = insertion_step::COMPARE;
 }

@@ -2,12 +2,11 @@
 #define BUBBLE_H
 #include "sorter.h"
 
-enum bubble_step {BS_COMPARE,BS_SWAP,BS_INCREMENT};
+enum class bubble_step {COMPARE,SWAP,INCREMENT};
 
 class bubble : public sorter
 {
     bubble_step step;
-    bool compareState;
     bool hasSwaps;
     void makeSwapsString();
 

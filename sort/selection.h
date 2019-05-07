@@ -2,14 +2,14 @@
 #define SELECTION_H
 #include "sorter.h"
 
-enum selection_step{SS_COMPARE, SS_INCREMENT, SS_SWAP};
+enum class selection_step{COMPARE, INCREMENT, SWAP, ADVANCE};
 
 class selection : public sorter
 {
     selection_step step;
     int minAddr;
     int minVal;
-    bool compareState;
+    void makeMinStr();
 
 public:
     selection();

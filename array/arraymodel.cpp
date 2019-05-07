@@ -131,6 +131,10 @@ FILL_TYPE arraymodel::fillType() const
 {
     return m_fill;
 }
+bool arraymodel::compare() const
+{
+    return m_vect.at(m_idxA) > m_vect.at(m_idxB);
+}
 int arraymodel::size() const
 {
     return m_vect.size();
