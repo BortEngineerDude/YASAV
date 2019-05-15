@@ -2,7 +2,7 @@
 #define BUBBLE_H
 #include "sorter.h"
 
-enum class bubble_step {COMPARE,SWAP,INCREMENT};
+enum class bubble_step : unsigned char {COMPARE,SWAP,INCREMENT};
 
 class bubble : public sorter
 {

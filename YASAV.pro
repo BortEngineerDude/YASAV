@@ -33,7 +33,8 @@ SOURCES += main.cpp\
     sort/bubble.cpp \
     sort/sorter.cpp \
     sort/selection.cpp \
-    sort/insertion.cpp
+    sort/insertion.cpp \
+    sort/merge.cpp
 
 HEADERS  += yasav.h \
     array/arraymodel.h \
@@ -42,6 +43,7 @@ HEADERS  += yasav.h \
     sort/sorter.h \
     sort/selection.h \
     range.h \
-    sort/insertion.h
+    sort/insertion.h \
+    sort/merge.h
 
 FORMS    += yasav.ui

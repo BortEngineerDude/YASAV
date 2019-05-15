@@ -8,6 +8,16 @@ yasav::yasav(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    QPalette labels(ui->labelA->palette());
+
+    labels.setColor(QPalette::WindowText, QColor(COLOR_A).darker());
+    ui->labelA->setPalette(labels);
+    ui->labelArrA->setPalette(labels);
+
+    labels.setColor(QPalette::WindowText, QColor(COLOR_B).darker());
+    ui->labelB->setPalette(labels);
+    ui->labelArrB->setPalette(labels);
+
     ui->comboBoxArrayInit->addItem(
                 QObject::tr("Linear fill"),
                 QVariant(static_cast<int>(FILL_TYPE::LINEAR)));
@@ -105,7 +115,40 @@ void yasav::updateTicker(int newMs)
 }
 void yasav::updateStats()
 {
-    ui->labelNextStep->setText(s->getState());
+    QString dummy;
+
+    dummy.setNum( m.A() );
+    dummy.prepend( "A = " );
+    ui->labelA->setText( dummy );
+    dummy.clear();
+
+    dummy.setNum( m.B() );
+    dummy.prepend( "B = " );
+    ui->labelB->setText( dummy );
+
+    dummy.setNum( m.element( m.A() ));
+    dummy.prepend( "ARR[A] = " );
+    ui->labelArrA->setText( dummy );
+
+    dummy.setNum( m.element(m.B() ));
+    dummy.prepend( "ARR[B] = " );
+    ui->labelArrB->setText( dummy );
+
+    ui->labelNextStep->setText( s->getState() );
+}
+void yasav::toggleIteration()
+{
+    if(ticker.isActive())
+    {
+        stop();
+    }
+    else
+    {
+        ui->pushButtonGoStop->setText( QObject::tr("Stop") );
+        ui->pushButtonGoStop->setChecked( true );
+        connect(s, SIGNAL( iterationDone() ), this, SLOT( stop() ));
+        ticker.start();
+    }
 }
 void yasav::toggleGoStop()
 {
@@ -116,12 +159,16 @@ void yasav::toggleGoStop()
     else
     {
         ui->pushButtonGoStop->setText( QObject::tr("Stop") );
+        ui->pushButtonIteration->setEnabled( false );
         ticker.start();
     }
 }
 void yasav::stop()
 {
     ui->pushButtonGoStop->setText( QObject::tr("Go") );
-    ui->pushButtonGoStop->setChecked(false);
+    ui->pushButtonIteration->setChecked( false );
+    ui->pushButtonIteration->setEnabled( true );
+    ui->pushButtonGoStop->setChecked( false );
+    disconnect(s, SIGNAL( iterationDone() ), this, SLOT( stop() ));
     ticker.stop();
 }

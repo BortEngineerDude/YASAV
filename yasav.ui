@@ -39,7 +39,7 @@
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout">
+         <layout class="QHBoxLayout" name="horizontalLayoutControls">
           <item>
            <widget class="QPushButton" name="pushButtonGoStop">
             <property name="text">
@@ -54,6 +54,16 @@
            </widget>
           </item>
           <item>
+           <widget class="QPushButton" name="pushButtonIteration">
+            <property name="text">
+             <string>Iteration</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QPushButton" name="pushButtonStep">
             <property name="text">
              <string>Step</string>
@@ -63,9 +73,15 @@
          </layout>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <layout class="QHBoxLayout" name="horizontalLayoutTiming">
           <item>
            <widget class="QLabel" name="labelTiming">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text">
              <string>Step every</string>
             </property>
@@ -100,41 +116,69 @@
        <property name="title">
         <string>Array</string>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_4">
+       <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <widget class="QComboBox" name="comboBoxArrayInit"/>
         </item>
         <item>
-         <widget class="QLabel" name="labelArraySize">
-          <property name="text">
-           <string>Array Size: (default)</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSlider" name="horizontalSliderArraySize">
-          <property name="minimum">
-           <number>10</number>
-          </property>
-          <property name="maximum">
-           <number>200</number>
-          </property>
-          <property name="pageStep">
-           <number>100</number>
-          </property>
-          <property name="value">
-           <number>100</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="tickPosition">
-           <enum>QSlider::TicksBothSides</enum>
-          </property>
-          <property name="tickInterval">
-           <number>10</number>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QSlider" name="horizontalSliderArraySize">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>140</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="minimum">
+             <number>10</number>
+            </property>
+            <property name="maximum">
+             <number>200</number>
+            </property>
+            <property name="pageStep">
+             <number>100</number>
+            </property>
+            <property name="value">
+             <number>100</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="tickPosition">
+             <enum>QSlider::TicksBothSides</enum>
+            </property>
+            <property name="tickInterval">
+             <number>10</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="labelArraySize">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Array Size: (def)</string>
+            </property>
+            <property name="textFormat">
+             <enum>Qt::PlainText</enum>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
          <widget class="QPushButton" name="pushButtonShuffle">
@@ -149,7 +193,7 @@
      <item>
       <widget class="QGroupBox" name="groupBoxSortingAlgorithm">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
+        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
          <horstretch>3</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -170,7 +214,7 @@
         <item>
          <widget class="QFrame" name="frameSortingAlgorithmDesc">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
+           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -181,13 +225,53 @@
           <property name="frameShadow">
            <enum>QFrame::Raised</enum>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout">
-           <item>
+          <layout class="QGridLayout" name="gridLayout">
+           <item row="0" column="0">
+            <widget class="QLabel" name="labelA">
+             <property name="text">
+              <string notr="true">A = -1</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLabel" name="labelB">
+             <property name="text">
+              <string notr="true">B = -1</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="labelArrA">
+             <property name="text">
+              <string notr="true">ARR[A] = -1</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLabel" name="labelArrB">
+             <property name="text">
+              <string notr="true">ARR[B] = -1</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" colspan="2">
             <widget class="QLabel" name="labelNextStep">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
+              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
+               <verstretch>1</verstretch>
               </sizepolicy>
              </property>
              <property name="minimumSize">
@@ -209,22 +293,6 @@
         </item>
        </layout>
       </widget>
-     </item>
-     <item>
-      <spacer name="verticalSpacer">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Expanding</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
      </item>
     </layout>
    </item>
@@ -264,8 +332,8 @@
    <slot>stop()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>858</x>
-     <y>277</y>
+     <x>777</x>
+     <y>283</y>
     </hint>
     <hint type="destinationlabel">
      <x>899</x>
@@ -280,8 +348,8 @@
    <slot>stop()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>801</x>
-     <y>240</y>
+     <x>777</x>
+     <y>249</y>
     </hint>
     <hint type="destinationlabel">
      <x>896</x>
@@ -296,8 +364,8 @@
    <slot>updateArrayFill(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>863</x>
-     <y>172</y>
+     <x>777</x>
+     <y>192</y>
     </hint>
     <hint type="destinationlabel">
      <x>900</x>
@@ -312,8 +380,8 @@
    <slot>toggleGoStop()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>770</x>
-     <y>66</y>
+     <x>604</x>
+     <y>73</y>
     </hint>
     <hint type="destinationlabel">
      <x>898</x>
@@ -328,8 +396,8 @@
    <slot>stop()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>859</x>
-     <y>64</y>
+     <x>776</x>
+     <y>73</y>
     </hint>
     <hint type="destinationlabel">
      <x>901</x>
@@ -344,8 +412,8 @@
    <slot>updateTicker(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>828</x>
-     <y>103</y>
+     <x>776</x>
+     <y>110</y>
     </hint>
     <hint type="destinationlabel">
      <x>896</x>
@@ -360,8 +428,8 @@
    <slot>updateSorter(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>863</x>
-     <y>360</y>
+     <x>777</x>
+     <y>364</y>
     </hint>
     <hint type="destinationlabel">
      <x>897</x>
@@ -376,12 +444,28 @@
    <slot>stop()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>849</x>
-     <y>339</y>
+     <x>777</x>
+     <y>364</y>
     </hint>
     <hint type="destinationlabel">
      <x>897</x>
      <y>329</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonIteration</sender>
+   <signal>released()</signal>
+   <receiver>yasav</receiver>
+   <slot>toggleIteration()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>646</x>
+     <y>56</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>793</x>
+     <y>7</y>
     </hint>
    </hints>
   </connection>
@@ -393,5 +477,6 @@
   <slot>toggleGoStop()</slot>
   <slot>updateTicker(int)</slot>
   <slot>updateSorter(int)</slot>
+  <slot>toggleIteration()</slot>
  </slots>
 </ui>

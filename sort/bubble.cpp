@@ -11,7 +11,7 @@ void bubble::makeSwapsString()
     {
         stateStream << QObject::tr("false");
     }
-    stateStream << ".\n\n";
+    stateStream << ".\n";
 }
 
 bubble::bubble()
@@ -35,6 +35,7 @@ void bubble::advance()
 {
     if(model->A() == -1)
     {
+        model->resetStats();
         model->m_complete.setPoint(model->size());
         model->setA(0);
         model->setB(1);
@@ -47,17 +48,17 @@ void bubble::advance()
         state.clear();
         makeSwapsString();
 
-        stateStream << "A > B = \n";
+        stateStream << "ARR[A] > ARR[B] = ";
         if(model->compare())
         {
             stateStream << QObject::tr("true") << ".\n";
-            stateStream << QObject::tr("\nNext step:\nswap A and B.");
+            stateStream << QObject::tr("\nNext step:\nSwap ARR[A] and ARR[B].");
             step = bubble_step::SWAP;
         }
         else
         {
             stateStream << QObject::tr("false") << ".\n";
-            stateStream << QObject::tr("\nNext step:\nincrement [A] and [B]");
+            stateStream << QObject::tr("\nNext step:\nIncrement A and B.");
             step = bubble_step::INCREMENT;
         }
 
@@ -74,8 +75,8 @@ void bubble::advance()
         model->swap();
         hasSwaps = true;
 
-        stateStream << QObject::tr("A > B =>\nswap A and B.\n");
-        stateStream << QObject::tr("\nNext step:\nincrement [A] and [B]");
+        stateStream << QObject::tr("A > B => Swap A and B.\n");
+        stateStream << QObject::tr("\nNext step:\nIncrement A and B.");
         step = bubble_step::INCREMENT;
 
         emit stepDone();
@@ -89,7 +90,7 @@ void bubble::advance()
 
         state.clear();
         makeSwapsString();
-        stateStream << "[A] = [B],\n[B] = [B] + 1.\n";
+        stateStream << "A = B, B = B + 1.\n";
 
         if( model->B() >= model->m_complete.begin() )
         {
@@ -99,7 +100,7 @@ void bubble::advance()
                 resetState();
                 model->m_complete.setRange(0,model->size());
 
-                stateStream << QObject::tr("Reached 0 => sorting finished.");
+                stateStream << QObject::tr("Reached 0 =>\nSorting finished.");
 
                 emit stepDone();
                 emit finished();
@@ -119,7 +120,7 @@ void bubble::advance()
                     resetState();
                     model->m_complete.setRange(0,model->size());
 
-                    stateStream << QObject::tr("No swaps=>\nsorting finished.");
+                    stateStream << QObject::tr("No swaps =>\nSorting finished.");
 
                     emit stepDone();
                     emit finished();
@@ -128,7 +129,7 @@ void bubble::advance()
             }
         }
 
-        stateStream << QObject::tr("\nNext step:\ncompare A and B.");
+        stateStream << QObject::tr("\nNext step:\nCompare ARR[A] and ARR[B].");
         step = bubble_step::COMPARE;
 
         emit stepDone();

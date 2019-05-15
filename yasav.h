@@ -41,6 +41,7 @@ private slots:
     void updateSorter(int newIndex);
     void updateTicker(int newMs);
     void updateStats();
+    void toggleIteration();
     void toggleGoStop();
     void stop();
 };

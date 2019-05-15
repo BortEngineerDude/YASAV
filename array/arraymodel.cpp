@@ -5,6 +5,8 @@ arraymodel::arraymodel(int size, FILL_TYPE fillType)
     m_idxA = -1;
     m_idxB = -1;
     m_fill = fillType;
+    m_comparisons = 0;
+    m_swaps = 0;
 
     if(size > MAX_MDL_SIZE)
     {
@@ -21,6 +23,7 @@ void arraymodel::swap()
     int tmp = m_vect.at(m_idxA);
     m_vect[m_idxA] = m_vect.at(m_idxB);
     m_vect[m_idxB] = tmp;
+    ++m_swaps;
     //emit changed();
 }
 void arraymodel::setA(int A)
@@ -37,6 +40,34 @@ void arraymodel::setB(int B)
         m_idxB = B;
     }
 }
+//void arraymodel::incrementA()
+//{
+//    if(m_idxA < m_vect.size())
+//    {
+//        ++m_idxA;
+//    }
+//}
+//void arraymodel::incrementB()
+//{
+//    if(m_idxB < m_vect.size())
+//    {
+//        ++m_idxB;
+//    }
+//}
+//void arraymodel::decrementA()
+//{
+//    if(m_idxA > -1)
+//    {
+//        --m_idxA;
+//    }
+//}
+//void arraymodel::decrementB()
+//{
+//    if(m_idxB > -1)
+//    {
+//        --m_idxB;
+//    }
+//}
 void arraymodel::shuffle()
 {
     std::mt19937 randomizer;
@@ -47,6 +78,8 @@ void arraymodel::shuffle()
 void arraymodel::refill()
 {
     int size = m_vect.size();
+    resetStats();
+
     switch(m_fill)
     {
     case FILL_TYPE::LINEAR:
@@ -102,6 +135,14 @@ void arraymodel::refill()
     m_complete.setRange(0,size);
     emit changed();
 }
+unsigned int arraymodel::comparisons() const
+{
+    return m_comparisons;
+}
+unsigned int arraymodel::swaps() const
+{
+    return m_swaps;
+}
 void arraymodel::setFillType(FILL_TYPE newFillType)
 {
     if(newFillType != m_fill)
@@ -127,13 +168,24 @@ void arraymodel::setSize(int newSize)
         refill();
     }
 }
+void arraymodel::resetStats()
+{
+    m_comparisons = 0;
+    m_swaps = 0;
+}
 FILL_TYPE arraymodel::fillType() const
 {
     return m_fill;
 }
-bool arraymodel::compare() const
+bool arraymodel::compare()
 {
-    return m_vect.at(m_idxA) > m_vect.at(m_idxB);
+    if( m_idxA >= 0 && m_idxA < m_vect.size() &&
+            m_idxB >= 0 && m_idxB < m_vect.size() )
+    {
+        return m_vect.at(m_idxA) > m_vect.at(m_idxB);
+    }
+    ++m_comparisons;
+    return false;
 }
 int arraymodel::size() const
 {
@@ -171,19 +223,11 @@ int arraymodel::B() const
 {
     return m_idxB;
 }
-int arraymodel::elementA() const
+int arraymodel::element(int idx) const
 {
-    if(m_idxA >= 0 && m_idxA <= m_vect.size())
+    if(idx >= 0 && idx < m_vect.size() )
     {
-        return m_vect.at(m_idxA); //QVector does NOT use exceptions!
-    }
-    return -1;
-}
-int arraymodel::elementB() const
-{
-    if(m_idxB >= 0 && m_idxB <= m_vect.size())
-    {
-        return m_vect.at(m_idxB);
+        return m_vect[idx];
     }
     return -1;
 }

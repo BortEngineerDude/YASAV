@@ -24,6 +24,8 @@ class arraymodel: public QObject
     FILL_TYPE m_fill;
     int m_idxA;
     int m_idxB;
+    unsigned int m_swaps;
+    unsigned int m_comparisons;
 
 public:
     range<int> m_complete;
@@ -31,13 +33,19 @@ public:
     arraymodel(int size = 50, FILL_TYPE fill = FILL_TYPE::LINEAR);
 
     void swap();
+    bool compare();
     void setA(int A);
     void setB(int B);
-    void setTop(int top);
+//    void incrementA();
+//    void incrementB();
+//    void decrementA();
+//    void decrementB();
+
     void refill();
 
+    unsigned int comparisons() const;
+    unsigned int swaps() const;
     FILL_TYPE fillType() const;
-    bool compare() const;
     int size() const;
     int max() const;
     int min() const;
@@ -45,9 +53,7 @@ public:
     int A() const;
     int B() const;
 
-    int elementA() const;
-    int elementB() const;
-    //int element(int idx) const;
+    int element(int idx) const;
 
     ~arraymodel() = default;
 
@@ -55,6 +61,7 @@ public slots:
     void shuffle();
     void setFillType(FILL_TYPE newFillType);
     void setSize(int newSize);
+    void resetStats();
 
 signals:
     void changed();

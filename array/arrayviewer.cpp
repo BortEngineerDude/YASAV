@@ -96,28 +96,4 @@ void arrayviewer::paintEvent(QPaintEvent *event)
         //shift the X for the next line
         base += width;
     }
-
-    //draw stats
-    if( model->A() != -1 && model->B() != -1)
-    {
-        QFont def;
-        const int sizeFactor = bounds.height() / 10;
-        const int xOffset = bounds.width() / 25;
-        def.setPixelSize(sizeFactor);
-
-        QString stat;
-        QTextStream statStream(&stat);
-
-        statStream << "A [ " << model->m_idxA << " ] = " << model->elementA();
-        pen.setColor(colorA.lighter());
-        p.setPen(pen);
-        p.setFont(def);
-        p.drawText(xOffset, sizeFactor, stat);
-
-        stat.clear();
-        statStream << "B [ " << model->m_idxB << " ] = " << model->elementB();
-        pen.setColor(colorB.lighter());
-        p.setPen(pen);
-        p.drawText(xOffset, sizeFactor*2, stat);
-    }
 }

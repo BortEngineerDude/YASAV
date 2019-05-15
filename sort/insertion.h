@@ -3,7 +3,7 @@
 
 #include "sorter.h"
 
-enum class insertion_step {COMPARE,MOVE,DECREMENT,INCREMENT};
+enum class insertion_step : unsigned char {COMPARE,MOVE,DECREMENT,INCREMENT};
 
 class insertion : public sorter
 {
