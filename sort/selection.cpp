@@ -10,8 +10,10 @@ SORT_TYPE selection::sortType() const
 }
 void selection::advance()
 {
+    ++steps;
     if(model->A() == -1)
     {
+        steps = 0;
         model->resetStats();
         model->m_complete.setPoint(0);
         model->setA(0);

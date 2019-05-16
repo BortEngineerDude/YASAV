@@ -33,9 +33,11 @@ void bubble::resetState()
 }
 void bubble::advance()
 {
+    ++steps;
     if(model->A() == -1)
     {
         model->resetStats();
+        steps = 0;
         model->m_complete.setPoint(model->size());
         model->setA(0);
         model->setB(1);

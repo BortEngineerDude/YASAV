@@ -10,8 +10,10 @@ SORT_TYPE insertion::sortType() const
 }
 void insertion::advance()
 {
+    ++steps;
     if(model->A() == -1)
     {
+        steps = 0;
         model->resetStats();
         model->m_complete.setPoint(0);
         model->setA(0);

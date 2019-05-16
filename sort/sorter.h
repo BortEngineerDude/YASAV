@@ -15,6 +15,7 @@ protected:
     QString state;
     QTextStream stateStream;
     QString generateStats();
+    unsigned int steps;
 
 public:
     sorter();

@@ -5,7 +5,8 @@ QString sorter::generateStats()
     QString stats;
     QTextStream s(&stats);
     s << '\n' << QObject::tr("Swaps") << ": " << model->swaps()
-      << '\n' << QObject::tr("Comparisons") << ": " << model->comparisons();
+      << '\n' << QObject::tr("Comparisons") << ": " << model->comparisons()
+      << '\n' << QObject::tr("Steps") << ": " << steps;
     return stats;
 }
 
