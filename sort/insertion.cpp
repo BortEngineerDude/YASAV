@@ -12,8 +12,8 @@ void insertion::advance()
 {
     if(model->A() == -1)
     {
-        model->m_complete.setPoint(0);
         model->resetStats();
+        model->m_complete.setPoint(0);
         model->setA(0);
         model->setB(1);
     }
@@ -96,7 +96,8 @@ void insertion::advance()
         if(model->B() >= model->size())
         {
             resetState();
-            stateStream << QObject::tr("Reached end =>\nSorting finished.");
+            stateStream << QObject::tr("Reached end =>\nSorting finished.")
+                        << this->generateStats();
             emit stepDone();
             emit finished();
             return;

@@ -12,6 +12,7 @@ void selection::advance()
 {
     if(model->A() == -1)
     {
+        model->resetStats();
         model->m_complete.setPoint(0);
         model->setA(0);
         model->setB(1);
@@ -100,7 +101,8 @@ void selection::advance()
         {
             resetState();
             model->m_complete.setRange(0,model->size());
-            stateStream << QObject::tr("Reached end =>\nSorting finished.");
+            stateStream << QObject::tr("Reached end =>\nSorting finished.")
+                        << this->generateStats();
             emit finished();
         }
         else

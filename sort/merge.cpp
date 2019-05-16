@@ -10,7 +10,7 @@ SORT_TYPE merge::sortType() const
 }
 void merge::advance()
 {
-
+    //i am lost
 }
 
 void merge::resetState()

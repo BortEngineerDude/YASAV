@@ -1,5 +1,14 @@
 #include "sorter.h"
 
+QString sorter::generateStats()
+{
+    QString stats;
+    QTextStream s(&stats);
+    s << '\n' << QObject::tr("Swaps") << ": " << model->swaps()
+      << '\n' << QObject::tr("Comparisons") << ": " << model->comparisons();
+    return stats;
+}
+
 sorter::sorter() : stateStream(&state)
 {}
 

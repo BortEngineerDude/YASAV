@@ -100,7 +100,9 @@ void bubble::advance()
                 resetState();
                 model->m_complete.setRange(0,model->size());
 
-                stateStream << QObject::tr("Reached 0 =>\nSorting finished.");
+                stateStream << QObject::tr(
+                                   "Reached 0 =>\nSorting finished.")
+                            << this->generateStats();
 
                 emit stepDone();
                 emit finished();
@@ -120,7 +122,9 @@ void bubble::advance()
                     resetState();
                     model->m_complete.setRange(0,model->size());
 
-                    stateStream << QObject::tr("No swaps =>\nSorting finished.");
+                    stateStream << QObject::tr(
+                                       "No swaps =>\nSorting finished.")
+                                << this->generateStats();
 
                     emit stepDone();
                     emit finished();

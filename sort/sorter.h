@@ -14,6 +14,7 @@ protected:
     arraymodel * model;
     QString state;
     QTextStream stateStream;
+    QString generateStats();
 
 public:
     sorter();

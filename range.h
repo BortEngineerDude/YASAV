@@ -37,6 +37,10 @@ public:
     {
         return m_begin;
     }
+    const T& middle() const
+    {
+        return (m_end - m_begin) / 2;
+    }
     const T& end() const
     {
         return m_end;

@@ -179,12 +179,12 @@ FILL_TYPE arraymodel::fillType() const
 }
 bool arraymodel::compare()
 {
+    ++m_comparisons;
     if( m_idxA >= 0 && m_idxA < m_vect.size() &&
             m_idxB >= 0 && m_idxB < m_vect.size() )
     {
         return m_vect.at(m_idxA) > m_vect.at(m_idxB);
     }
-    ++m_comparisons;
     return false;
 }
 int arraymodel::size() const
