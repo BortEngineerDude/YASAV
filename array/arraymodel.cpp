@@ -70,7 +70,8 @@ void arraymodel::setB(int B)
 //}
 void arraymodel::shuffle()
 {
-    std::mt19937 randomizer;
+    std::random_device rd;
+    std::mt19937 randomizer(rd());
     std::shuffle(m_vect.begin(), m_vect.end(), randomizer);
     m_complete.setPoint(-1);
     emit changed();

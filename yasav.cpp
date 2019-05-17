@@ -12,11 +12,9 @@ yasav::yasav(QWidget *parent) :
 
     labels.setColor(QPalette::WindowText, QColor(COLOR_A).darker());
     ui->labelA->setPalette(labels);
-    ui->labelArrA->setPalette(labels);
 
     labels.setColor(QPalette::WindowText, QColor(COLOR_B).darker());
     ui->labelB->setPalette(labels);
-    ui->labelArrB->setPalette(labels);
 
     ui->comboBoxArrayInit->addItem(
                 QObject::tr("Linear fill"),
@@ -115,26 +113,33 @@ void yasav::updateTicker(int newMs)
 }
 void yasav::updateStats()
 {
-    QString dummy;
+    QString label;
+    QTextStream labelStream(&label);
 
-    dummy.setNum( m.A() );
-    dummy.prepend( "A = " );
-    ui->labelA->setText( dummy );
-    dummy.clear();
+    labelStream << "A = " << m.A() << ", ARR[A] = " << m.element(m.A());
+    ui->labelA->setText( label );
+    label.clear();
 
-    dummy.setNum( m.B() );
-    dummy.prepend( "B = " );
-    ui->labelB->setText( dummy );
-
-    dummy.setNum( m.element( m.A() ));
-    dummy.prepend( "ARR[A] = " );
-    ui->labelArrA->setText( dummy );
-
-    dummy.setNum( m.element(m.B() ));
-    dummy.prepend( "ARR[B] = " );
-    ui->labelArrB->setText( dummy );
+    labelStream << "B = " << m.B() << ", ARR[B] = " << m.element(m.B());
+    ui->labelB->setText( label );
 
     ui->labelNextStep->setText( s->getState() );
+}
+void yasav::updateViewStyle()
+{
+    if(ui->radioButtonBarsView->isChecked())
+    {
+        ui->horizontalSliderArraySize->setRange(10,200);
+        ui->horizontalSliderArraySize->setTickInterval(20);
+        ui->viewer->setViewStyle(VIEW_STYLE::BARS);
+    }
+    else
+    {
+        ui->horizontalSliderArraySize->setRange(5,20);
+        ui->horizontalSliderArraySize->setTickInterval(1);
+        ui->viewer->setViewStyle(VIEW_STYLE::BOXES);
+    }
+    ui->viewer->repaint();
 }
 void yasav::toggleIteration()
 {

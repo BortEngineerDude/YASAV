@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QPainter>
 #include <QBrush>
+#include <QString>
+#include <QPoint>
 #include <QRect>
 #include <QLine>
 #include <QPaintEvent>
@@ -22,6 +24,8 @@
 #include <QDebug>
 #endif
 
+enum class VIEW_STYLE : unsigned char {BARS, BOXES};
+
 class arrayviewer : public QWidget
 {
     Q_OBJECT
@@ -31,10 +35,16 @@ class arrayviewer : public QWidget
     QColor colorDone;
     QColor colorUnknown;
     QColor colorBackground;
+    VIEW_STYLE style;
+    QColor determineColor(int val);
+    void drawBoxes();
+    void drawBars();
 
 public:
     explicit arrayviewer(QWidget *parent = 0);
     void setModel(const arraymodel * newModel);
+public slots:
+    void setViewStyle(VIEW_STYLE newViewStyle);
 
 protected:
     virtual void paintEvent(QPaintEvent *event);
