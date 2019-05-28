@@ -24,7 +24,7 @@
 #include <QDebug>
 #endif
 
-enum class VIEW_STYLE : unsigned char {BARS, BOXES};
+enum class VIEW_STYLE : unsigned char { BARS, BOXES };
 
 class arrayviewer : public QWidget
 {
@@ -36,12 +36,12 @@ class arrayviewer : public QWidget
     QColor colorUnknown;
     QColor colorBackground;
     VIEW_STYLE style;
-    QColor determineColor(int val);
+    const QColor& determineColor(int val);
     void drawBoxes();
     void drawBars();
 
 public:
-    explicit arrayviewer(QWidget *parent = 0);
+    explicit arrayviewer(QWidget *parent = Q_NULLPTR);
     void setModel(const arraymodel * newModel);
 public slots:
     void setViewStyle(VIEW_STYLE newViewStyle);

@@ -3,7 +3,7 @@
 #ifndef ARRAYMODEL_H
 #define ARRAYMODEL_H
 
-#define MAX_MDL_SIZE 1024
+#define MAX_MDL_SIZE 300
 #include <QVector>
 #include <QObject>
 #include <QString>
@@ -12,7 +12,7 @@
 #include <random>
 #include "range.h"
 
-enum class FILL_TYPE{LINEAR,CUBIC,ONE_ODD,LINEAR_INVERSE};
+enum class FILL_TYPE{ LINEAR, CUBIC, ONE_ODD, LINEAR_INVERSE };
 
 class arraymodel: public QObject
 {
@@ -21,16 +21,16 @@ class arraymodel: public QObject
     Q_OBJECT
 
     QVector<int> m_vect;
-    FILL_TYPE m_fill;
     int m_idxA;
     int m_idxB;
+    FILL_TYPE m_fill;
     unsigned int m_swaps;
     unsigned int m_comparisons;
 
 public:
     range<int> m_complete;
     //arraymodel();
-    arraymodel(int size = 50, FILL_TYPE fill = FILL_TYPE::LINEAR);
+    arraymodel( int size = 50, FILL_TYPE fill = FILL_TYPE::LINEAR );
 
     void swap();
     bool compare();
@@ -65,7 +65,6 @@ public slots:
 
 signals:
     void changed();
-    void failed(QString failure);
 };
 
 #endif // ARRAYMODEL_H

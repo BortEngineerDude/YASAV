@@ -1,6 +1,6 @@
 ﻿#include "arrayviewer.h"
 
-QColor arrayviewer::determineColor(int val)
+const QColor& arrayviewer::determineColor(int val)
 {
     if( val == model->A() )
     {
@@ -10,7 +10,7 @@ QColor arrayviewer::determineColor(int val)
     {
         return colorB;
     }
-    if( model->m_complete.inRange(val) )
+    if( model->m_complete.inRange( val ) )
     {
         return colorDone;
     }
@@ -18,20 +18,20 @@ QColor arrayviewer::determineColor(int val)
 }
 void arrayviewer::drawBoxes()
 {
-    QPainter p(this);
+    QPainter p( this );
     //defines bounds of our drawing space AND
     //adjust rect so it won't interfere with viewer frame borders
-    const QRect bounds = this->rect().adjusted(0, 0, -1, -1);;
+    const QRect bounds = this->rect().adjusted( 0, 0, -1, -1 );
 
     //draw solid background inside frame
-    QBrush br(colorBackground);
-    QPen pen(br, 1);
-    p.setPen(pen);
-    p.setBrush(br);
-    p.drawRect(bounds);
+    QBrush br( colorBackground );
+    QPen pen( br, 1 );
+    p.setPen( pen );
+    p.setBrush( br );
+    p.drawRect( bounds );
 
     int i = 0;
-    int size = model->size();
+    const int size = model->size();
 
     //dimension of a single cube representing one element
     const double width = static_cast<double>( bounds.width() ) /
@@ -41,16 +41,17 @@ void arrayviewer::drawBoxes()
     const double spacingMultiplier = 0.05;
 
     QFont font;
-    font.setPixelSize( width * ( 1 - spacingMultiplier * 4 ) );
+    font.setPixelSize( static_cast<int>( ( width * ( 1. - spacingMultiplier * 4. ) ) ) );
     p.setFont( font );
 
-    QRectF box(width * spacingMultiplier / 2, middle, width * 0.9,width * 0.9);
+    //first box is placed at ( spacingMultuplier / 2 )
+    QRectF box( width * spacingMultiplier / 2, middle, width * 0.9, width * 0.9 );
 
     while( i < size )
     {
-        QColor current = determineColor(i);
-        pen.setColor(current);
-        br.setColor(current);
+        const QColor current( determineColor( i ) );
+        pen.setColor( current );
+        br.setColor( current );
 
         p.setPen( pen );
         p.setBrush( br );
@@ -71,17 +72,17 @@ void arrayviewer::drawBoxes()
 }
 void arrayviewer::drawBars()
 {
-    QPainter p(this);
+    QPainter p( this );
     //defines bounds of our drawing space AND
     //adjust rect so it won't interfere with viewer frame borders
-    const QRect bounds = this->rect().adjusted(0, 0, -1, -1);;
+    const QRect bounds = this->rect().adjusted( 0, 0, -1, -1 );;
 
     //draw solid background inside frame
-    QBrush br(colorBackground);
-    QPen pen(br, 1);
-    p.setPen(pen);
-    p.setBrush(br);
-    p.drawRect(bounds);
+    QBrush br( colorBackground );
+    QPen pen( br, 1 );
+    p.setPen( pen );
+    p.setBrush( br );
+    p.drawRect( bounds );
 
     int i = 0;
     const int size = model->size();
@@ -101,15 +102,15 @@ void arrayviewer::drawBars()
 
     //base is X position for line; as line is drawn from the middle, we put it
     //in the middle
-    double base = width/2;
+    double base = width / 2;
 
     pen.setWidthF(width);
 
     //drawing all the lines
     while( i < size )
     {
-        pen.setColor(determineColor(i));
-        p.setPen(pen);
+        pen.setColor( determineColor( i ) );
+        p.setPen( pen );
 
         //draw line for one element
         p.drawLine(
@@ -117,7 +118,7 @@ void arrayviewer::drawBars()
                              bottom,
                              base,
                              bottom -
-                             ( static_cast<double>( model->m_vect.at(i) )
+                             ( static_cast<double>( model->m_vect.at( i ) )
                                * heightScale )
                              ) );
 
@@ -127,9 +128,9 @@ void arrayviewer::drawBars()
         base += width;
     }
 }
-arrayviewer::arrayviewer(QWidget *parent) : QWidget(parent), colorA(COLOR_A),
-    colorB(COLOR_B), colorDone(COLOR_DONE), colorUnknown(COLOR_UNKNOWN),
-    colorBackground(COLOR_BACKGR), style(VIEW_STYLE::BARS)
+arrayviewer::arrayviewer( QWidget *parent ) : QWidget( parent ), colorA( COLOR_A ),
+    colorB (COLOR_B ), colorDone( COLOR_DONE ), colorUnknown( COLOR_UNKNOWN ),
+    colorBackground( COLOR_BACKGR ), style( VIEW_STYLE::BARS )
 {}
 void arrayviewer::setModel(const arraymodel *newModel)
 {
@@ -147,7 +148,7 @@ void arrayviewer::paintEvent(QPaintEvent *event)
     //this is the endpoint for the paint event
     event->accept();
 
-    if(style == VIEW_STYLE::BARS)
+    if( style == VIEW_STYLE::BARS )
     {
         drawBars();
     }

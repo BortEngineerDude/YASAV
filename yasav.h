@@ -25,7 +25,7 @@ class yasav : public QWidget
     Q_OBJECT
 
 public:
-    explicit yasav(QWidget *parent = 0);
+    explicit yasav(QWidget *parent = Q_NULLPTR);
     ~yasav();
 
 private:

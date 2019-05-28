@@ -10,6 +10,9 @@ yasav::yasav(QWidget *parent) :
 
     QPalette labels(ui->labelA->palette());
 
+    this->setWindowTitle(
+                QObject::tr("Yet Another Sorting Algorhitm Visualiser"));
+
     labels.setColor(QPalette::WindowText, QColor(COLOR_A).darker());
     ui->labelA->setPalette(labels);
 
