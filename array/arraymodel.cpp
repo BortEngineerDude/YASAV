@@ -162,7 +162,7 @@ int arraymodel::size() const
 }
 int arraymodel::max() const
 {
-    int max = m_vect.at(0);
+    int max = m_vect.at( 0 );
     for( int val : m_vect )
     {
         if( val > max )
@@ -174,7 +174,7 @@ int arraymodel::max() const
 }
 int arraymodel::min() const
 {
-    int min = m_vect.at(0);
+    int min = m_vect.at( 0 );
     for( int val : m_vect )
     {
         if( val < min )

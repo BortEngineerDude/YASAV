@@ -36,10 +36,6 @@ public:
     bool compare();
     void setA(int A);
     void setB(int B);
-//    void incrementA();
-//    void incrementB();
-//    void decrementA();
-//    void decrementB();
 
     void refill();
 
@@ -59,8 +55,8 @@ public:
 
 public slots:
     void shuffle();
-    void setFillType(FILL_TYPE newFillType);
-    void setSize(int newSize);
+    void setFillType( FILL_TYPE newFillType );
+    void setSize( int newSize );
     void resetStats();
 
 signals:
