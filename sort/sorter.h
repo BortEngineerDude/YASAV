@@ -11,19 +11,20 @@ class sorter : public QObject
     Q_OBJECT
 
 protected:
-    arraymodel * model;
-    QString state;
-    QTextStream stateStream;
-    QString generateStats();
-    unsigned int steps;
+    arraymodel * m_model;
+    QString m_state;
+    QTextStream m_stateStream;
+    int m_steps;
+    const QString generateStats();
 
 public:
     sorter();
-    sorter(arraymodel * model);
-    void setModel(arraymodel * newModel);
+    sorter( arraymodel * model );
+    void setModel( arraymodel * newModel );
     virtual SORT_TYPE sortType() const = 0;
     virtual ~sorter() = default;
-    const QString& getState() const;
+    const QString& state() const;
+    unsigned int steps() const;
 
 public slots:
     virtual void advance() = 0;

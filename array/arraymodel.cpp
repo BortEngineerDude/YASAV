@@ -1,7 +1,7 @@
 #include "arraymodel.h"
 
 arraymodel::arraymodel( int size, FILL_TYPE fillType ) : m_idxA(-1), m_idxB(-1),
-    m_fill( fillType ), m_swaps( 0 ), m_comparisons( 0 )
+    m_fill( fillType ), m_swaps( 0 ), m_comparisons( 0 ), m_highlight( false )
 {
     if(size > MAX_MDL_SIZE)
     {
@@ -41,6 +41,8 @@ void arraymodel::shuffle()
     std::mt19937 randomizer(rd());
     std::shuffle(m_vect.begin(), m_vect.end(), randomizer);
     m_complete.setPoint(-1);
+    m_idxA = -1;
+    m_idxB = -1;
     emit changed();
 }
 void arraymodel::refill()

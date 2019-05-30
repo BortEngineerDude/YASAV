@@ -119,14 +119,23 @@ void yasav::updateStats()
     QString label;
     QTextStream labelStream(&label);
 
-    labelStream << "A = " << m.A() << ", ARR[A] = " << m.element(m.A());
+    labelStream << "A = " << m.A();// << ", ARR[A] = " << m.element(m.A());
     ui->labelA->setText( label );
     label.clear();
 
-    labelStream << "B = " << m.B() << ", ARR[B] = " << m.element(m.B());
+    labelStream << "B = " << m.B();// << ", ARR[B] = " << m.element(m.B());
     ui->labelB->setText( label );
 
-    ui->labelNextStep->setText( s->getState() );
+    ui->labelNextStep->setText( s->state() );
+
+    label.setNum( m.swaps() );
+    ui->labelSwaps->setText( label );
+
+    label.setNum( m.comparisons() );
+    ui->labelComparisons->setText( label );
+
+    label.setNum( s->steps() );
+    ui->labelSteps->setText( label );
 }
 void yasav::updateViewStyle()
 {
@@ -154,7 +163,7 @@ void yasav::toggleIteration()
     {
         ui->pushButtonGoStop->setText( QObject::tr("Stop") );
         ui->pushButtonGoStop->setChecked( true );
-        connect(s, SIGNAL( iterationDone() ), this, SLOT( stop() ));
+        connect( s, SIGNAL( iterationDone() ), this, SLOT( stop() ) );
         ticker.start();
     }
 }
@@ -177,6 +186,6 @@ void yasav::stop()
     ui->pushButtonIteration->setChecked( false );
     ui->pushButtonIteration->setEnabled( true );
     ui->pushButtonGoStop->setChecked( false );
-    disconnect(s, SIGNAL( iterationDone() ), this, SLOT( stop() ));
+    disconnect( s, SIGNAL( iterationDone() ), this, SLOT( stop() ));
     ticker.stop();
 }

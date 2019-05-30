@@ -29,6 +29,7 @@ class arraymodel: public QObject
 
 public:
     range<int> m_complete;
+    bool m_highlight;
     //arraymodel();
     arraymodel( int size = 50, FILL_TYPE fill = FILL_TYPE::LINEAR );
 

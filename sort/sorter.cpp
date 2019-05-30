@@ -1,32 +1,33 @@
 #include "sorter.h"
 
-QString sorter::generateStats()
+const QString sorter::generateStats()
 {
     QString stats;
     QTextStream s(&stats);
-    s << '\n' << QObject::tr("Swaps") << ": " << model->swaps()
-      << '\n' << QObject::tr("Comparisons") << ": " << model->comparisons()
-      << '\n' << QObject::tr("Steps") << ": " << steps;
+    s << '\n' << QObject::tr("Steps") << ": " << m_steps
+      << '\n' << QObject::tr("Comparisons") << ": " << m_model->comparisons()
+      << '\n' << QObject::tr("Swaps") << ": " << m_model->swaps();
     return stats;
 }
-
-sorter::sorter() : stateStream(&state)
+sorter::sorter() : m_stateStream(&m_state), m_steps(0)
 {}
-
-sorter::sorter(arraymodel * newModel) : stateStream(&state)
+sorter::sorter(arraymodel * newModel) : m_stateStream(&m_state), m_steps(0)
 {
-    model = newModel;
-    model->setA(-1);
-    model->setB(-1);
+    m_model = newModel;
+    m_model->setA(-1);
+    m_model->setB(-1);
 }
 void sorter::setModel(arraymodel * newModel)
 {
-    model = newModel;
-    model->setA(-1);
-    model->setB(-1);
+    m_model = newModel;
+    m_model->setA(-1);
+    m_model->setB(-1);
 }
-
-const QString &sorter::getState() const
+const QString &sorter::state() const
 {
-    return state;
+    return m_state;
+}
+unsigned int sorter::steps() const
+{
+    return m_steps;
 }

@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/comparison.png</file>
+        <file>icons/steps.png</file>
+        <file>icons/swaps.png</file>
+    </qresource>
+</RCC>

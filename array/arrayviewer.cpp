@@ -1,13 +1,27 @@
 ﻿#include "arrayviewer.h"
 
-const QColor& arrayviewer::determineColor(int val)
+const QColor arrayviewer::determineColor(int val)
 {
     if( val == model->A() )
     {
+        if( model->m_highlight )
+        {
+            if( blink )
+            {
+                return colorA.lighter();
+            }
+        }
         return colorA;
     }
     if ( val == model->B() )
     {
+        if( model->m_highlight )
+        {
+            if( blink )
+            {
+                return colorB.lighter();
+            }
+        }
         return colorB;
     }
     if( model->m_complete.inRange( val ) )
@@ -36,35 +50,65 @@ void arrayviewer::drawBoxes()
     //dimension of a single cube representing one element
     const double width = static_cast<double>( bounds.width() ) /
             static_cast<double> ( size );
-    const double middle = bounds.center().y() - width / 2;
+    const double middle = bounds.center().y() - width * 0.8;
 
     const double spacingMultiplier = 0.05;
 
-    QFont font;
-    font.setPixelSize( static_cast<int>( ( width * ( 1. - spacingMultiplier * 4. ) ) ) );
-    p.setFont( font );
+    QFont fontValue;
+    fontValue.setPixelSize( static_cast<int>(
+                           ( width * ( 1. - spacingMultiplier * 4. ) ) ) );
+    p.setFont( fontValue );
+    QFont fontIndex;
+    fontIndex.setPixelSize( static_cast<int>( width / 3. ) );
 
     //first box is placed at ( spacingMultuplier / 2 )
-    QRectF box( width * spacingMultiplier / 2, middle, width * 0.9, width * 0.9 );
+    QRectF box( width * spacingMultiplier / 2, middle,
+                width * ( 1 - spacingMultiplier * 2 ),
+                width * ( 1 - spacingMultiplier * 2 ) );
+    QRectF boxOutline( box );
+    boxOutline.adjust( 0, 0, 0, width / 2 );
 
     while( i < size )
     {
         const QColor current( determineColor( i ) );
-        pen.setColor( current );
-        br.setColor( current );
+        QString text;
 
+        if( i == model->B() || i == model->A() )
+        {
+            br.setColor( current.darker(200) );
+            pen.setColor( current.darker(200) );
+            p.setPen( pen );
+            p.setBrush( br );
+            boxOutline.moveTo( box.topLeft() );
+            p.drawRoundedRect( boxOutline, 20, 20, Qt::RelativeSize );
+
+            pen.setColor( colorBackground );
+            p.setPen( pen );
+            p.setFont( fontIndex );
+            text.setNum( i );
+            if( i == model->B() )
+            {
+                text.prepend( "B: " );
+            }
+            else
+            {
+                text.prepend( "A: " );
+            }
+            p.drawText( boxOutline, Qt::AlignHCenter | Qt::AlignBottom, text );
+        }
+
+
+        br.setColor( current );
+        pen.setColor( current );
         p.setPen( pen );
         p.setBrush( br );
         p.drawRoundedRect( box, 20, 20, Qt::RelativeSize );
 
         pen.setColor( colorBackground );
         p.setPen( pen );
-        QString value;
-        QPointF valuePos = box.bottomLeft();
-        valuePos.rx() += width * spacingMultiplier / 2;
-        valuePos.ry() -= width * spacingMultiplier * 2;
-        value.setNum( model->m_vect.at(i) );
-        p.drawText( valuePos, value );
+        text.setNum( model->m_vect.at(i) );
+        p.setFont( fontValue );
+        p.drawText( box, Qt::AlignCenter, text );
 
         ++i;
         box.moveTo( i * width + width * spacingMultiplier, middle );
@@ -128,10 +172,20 @@ void arrayviewer::drawBars()
         base += width;
     }
 }
-arrayviewer::arrayviewer( QWidget *parent ) : QWidget( parent ), colorA( COLOR_A ),
-    colorB (COLOR_B ), colorDone( COLOR_DONE ), colorUnknown( COLOR_UNKNOWN ),
-    colorBackground( COLOR_BACKGR ), style( VIEW_STYLE::BARS )
-{}
+void arrayviewer::toggleBlink()
+{
+    blink = !blink;
+}
+arrayviewer::arrayviewer( QWidget *parent ) : QWidget( parent ),
+    colorA( COLOR_A ), colorB ( COLOR_B ), colorDone( COLOR_DONE ),
+    colorUnknown( COLOR_UNKNOWN ), colorBackground( COLOR_BACKGR ),
+    blinker( this ), blink( false), style( VIEW_STYLE::BARS )
+{
+    blinker.start( BLINK_TIME );
+    connect(&blinker, SIGNAL( timeout() ), this, SLOT( toggleBlink() ) );
+    connect(&blinker, SIGNAL( timeout() ), this, SLOT( repaint() ) );
+
+}
 void arrayviewer::setModel(const arraymodel *newModel)
 {
     model = newModel;

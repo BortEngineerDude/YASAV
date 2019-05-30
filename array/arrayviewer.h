@@ -12,6 +12,7 @@
 #include <QColor>
 #include <QFont>
 #include <QTextStream>
+#include <QTimer>
 #include "arraymodel.h"
 
 #define COLOR_A       0x4f, 0x61, 0xc5
@@ -19,6 +20,7 @@
 #define COLOR_DONE    0x4c, 0x8c, 0x4a
 #define COLOR_UNKNOWN 0x45, 0x5A, 0x64
 #define COLOR_BACKGR  0xc0, 0xc0, 0xc0
+#define BLINK_TIME    333
 
 #ifdef DEBUG
 #include <QDebug>
@@ -35,14 +37,20 @@ class arrayviewer : public QWidget
     QColor colorDone;
     QColor colorUnknown;
     QColor colorBackground;
+    QTimer blinker;
+    bool blink;
     VIEW_STYLE style;
-    const QColor& determineColor(int val);
+    const QColor determineColor(int val);
     void drawBoxes();
     void drawBars();
+
+private slots:
+    void toggleBlink();
 
 public:
     explicit arrayviewer(QWidget *parent = Q_NULLPTR);
     void setModel(const arraymodel * newModel);
+
 public slots:
     void setViewStyle(VIEW_STYLE newViewStyle);
 
