@@ -63,38 +63,6 @@
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="labelA">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string notr="true">A = -1</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="labelB">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string notr="true">B = -1</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item>
            <spacer name="horizontalSpacer">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -127,7 +95,7 @@
            <item row="1" column="0" colspan="2">
             <widget class="QLabel" name="labelNextStep">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>1</verstretch>
               </sizepolicy>
@@ -139,7 +107,10 @@
               </size>
              </property>
              <property name="text">
-              <string/>
+              <string notr="true"/>
+             </property>
+             <property name="scaledContents">
+              <bool>true</bool>
              </property>
              <property name="wordWrap">
               <bool>true</bool>
@@ -356,7 +327,7 @@
         <item>
          <widget class="QPushButton" name="pushButtonGoStop">
           <property name="text">
-           <string>Go</string>
+           <string>Start</string>
           </property>
           <property name="checkable">
            <bool>true</bool>
@@ -496,8 +467,8 @@
    <slot>updateArrayFill(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>560</x>
-     <y>333</y>
+     <x>567</x>
+     <y>356</y>
     </hint>
     <hint type="destinationlabel">
      <x>900</x>
@@ -513,7 +484,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>677</x>
-     <y>324</y>
+     <y>350</y>
     </hint>
     <hint type="destinationlabel">
      <x>898</x>
@@ -544,8 +515,8 @@
    <slot>updateTicker(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>677</x>
-     <y>469</y>
+     <x>665</x>
+     <y>472</y>
     </hint>
     <hint type="destinationlabel">
      <x>896</x>
@@ -560,8 +531,8 @@
    <slot>updateSorter(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>101</x>
-     <y>321</y>
+     <x>94</x>
+     <y>347</y>
     </hint>
     <hint type="destinationlabel">
      <x>897</x>
@@ -576,8 +547,8 @@
    <slot>stop()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>101</x>
-     <y>321</y>
+     <x>94</x>
+     <y>347</y>
     </hint>
     <hint type="destinationlabel">
      <x>897</x>
@@ -624,8 +595,8 @@
    <slot>updateViewStyle()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>426</x>
-     <y>319</y>
+     <x>452</x>
+     <y>344</y>
     </hint>
     <hint type="destinationlabel">
      <x>803</x>

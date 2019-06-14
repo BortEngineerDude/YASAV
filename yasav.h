@@ -6,6 +6,7 @@
 #include <QTextStream>
 #include <QTimer>
 #include <QPalette>
+#include <QFont>
 
 
 #include "array/arraymodel.h"

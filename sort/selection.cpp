@@ -29,21 +29,22 @@ void selection::advance()
         m_state.clear();
         m_model->m_highlight = true;
 
-        m_stateStream << "ARR[A] > ARR[B] = ";
-        if(m_model->compare())
+        m_stateStream << QObject::tr( "Current element is less than MIN: " );
+        if( m_model->compare() )
         {
             m_model->setA(m_model->B());
-            m_stateStream << QObject::tr( "true" ) << ".\n";
-            m_stateStream << QObject::tr( "New MIN found at ARR[" )
-                          << m_model->A() << "]" << '\n';
+            m_stateStream << QObject::tr( "true" ) << ".\n"
+                          << QObject::tr( "Set new MIN at current element." );
         }
         else
         {
-            m_stateStream << QObject::tr( "false" ) << ".\n";
-            m_stateStream << QObject::tr( "Looking for new MIN...\n" );
+            m_stateStream << QObject::tr( "false" ) << ".\n"
+                          << QObject::tr( "Current element is not MIN." );
         }
 
-        m_stateStream << QObject::tr( "\nNext step:\nIncrement B." );
+        m_stateStream << QObject::tr( "\nNext step:\n" )
+                      << QObject::tr( "Select next element." );
+
         step = selection_step::INCREMENT;
         emit stepDone();
         break;
@@ -53,20 +54,22 @@ void selection::advance()
         m_state.clear();
 
         m_model->setB(m_model->B() + 1);
-        m_stateStream << "\nB = B + 1";
+        m_stateStream << QObject::tr( "Selected next element" );
 
         if(m_model->B() >= m_model->size())
         {
-            m_model->setB(m_model->m_complete.end());
-            m_stateStream << QObject::tr(" //Reached end of array.\n")
-                        << QObject::tr(" \nNext step:\nSwap ARR[A] and ARR[B]." );
+            m_model->setB( m_model->m_complete.end() );
+            m_stateStream << QObject::tr( ", but reached end - \nreset to last"
+                                          " unsorted element" )
+                          << QObject::tr( "\nNext step:\n" )
+                          << QObject::tr( "Swap MIN and current element." );
             step = selection_step::SWAP;
         }
         else
         {
-            m_stateStream << '\n'
-                        << QObject::tr(
-                               "\nNext step:\nCompare ARR[A] and ARR[B].");
+            m_stateStream << ".\n"
+                          << QObject::tr( "\nNext step:\n" )
+                          << QObject::tr( "Compare MIN and current element." );
             step = selection_step::COMPARE;
         }
         emit stepDone();
@@ -78,16 +81,17 @@ void selection::advance()
 
         if( m_model->A() == m_model->B() )
         {
-            m_stateStream << "\nNo MIN to swap.\n";
+            m_stateStream << QObject::tr( "No MIN - no swap.\n" );
         }
         else
         {
             m_model->swap();
-            m_stateStream << "\nSwap A and B\n";
+            m_stateStream << QObject::tr( "Swapped MIN and current element.\n");
         }
 
         step = selection_step::ADVANCE;
-        m_stateStream << QObject::tr("\nNext step:\nGo to unsorted values.");
+        m_stateStream << QObject::tr( "\nNext step:\n" )
+                      << QObject::tr( "Select next unsorted element." );
         emit stepDone();
 
         break;
@@ -100,20 +104,21 @@ void selection::advance()
         m_model->setA( m_model->m_complete.end() );
         m_model->setB( m_model->A() + 1 );
 
-        m_stateStream << "A = " << m_model->A() << "\nB = A + 1\n";
+        m_stateStream << QObject::tr( "Selected next unsorted element.\n" );
 
         if( m_model->A() >= m_model->size() - 1 )
         {
             resetState();
             m_model->m_complete.setRange( 0, m_model->size() );
-            m_stateStream << QObject::tr( "Reached end =>\nSorting finished." )
-                        << this->generateStats();
+            m_stateStream << QObject::tr( "Reached end => " )
+                          << QObject::tr( "\nSorting finished." )
+                          << this->generateStats();
             emit finished();
         }
         else
         {
-            m_stateStream << QObject::tr(
-                               "\nNext step:\nCompare ARR[A] and ARR[B].");
+            m_stateStream << QObject::tr( "\nNext step:\n" )
+                          << QObject::tr( "Compare MIN and current element." );
             step = selection_step::COMPARE;
         }
         emit stepDone();

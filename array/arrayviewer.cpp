@@ -71,30 +71,22 @@ void arrayviewer::drawBoxes()
     while( i < size )
     {
         const QColor current( determineColor( i ) );
-        QString text;
 
         if( i == model->B() || i == model->A() )
         {
-            br.setColor( current.darker(200) );
-            pen.setColor( current.darker(200) );
+            br.setColor( current.darker( 200 ) );
+            pen.setColor( current.darker( 200 ) );
             p.setPen( pen );
             p.setBrush( br );
             boxOutline.moveTo( box.topLeft() );
-            p.drawRoundedRect( boxOutline, 20, 20, Qt::RelativeSize );
+            p.drawRect( boxOutline );
 
             pen.setColor( colorBackground );
             p.setPen( pen );
             p.setFont( fontIndex );
-            text.setNum( i );
-            if( i == model->B() )
-            {
-                text.prepend( "B: " );
-            }
-            else
-            {
-                text.prepend( "A: " );
-            }
-            p.drawText( boxOutline, Qt::AlignHCenter | Qt::AlignBottom, text );
+
+            p.drawText( boxOutline, Qt::AlignHCenter | Qt::AlignBottom,
+                        QString::number( i ) );
         }
 
 
@@ -102,13 +94,13 @@ void arrayviewer::drawBoxes()
         pen.setColor( current );
         p.setPen( pen );
         p.setBrush( br );
-        p.drawRoundedRect( box, 20, 20, Qt::RelativeSize );
+        p.drawRect( box );
 
         pen.setColor( colorBackground );
         p.setPen( pen );
-        text.setNum( model->m_vect.at(i) );
         p.setFont( fontValue );
-        p.drawText( box, Qt::AlignCenter, text );
+        p.drawText( box, Qt::AlignCenter,
+                    QString::number( model->m_vect.at( i ) ) );
 
         ++i;
         box.moveTo( i * width + width * spacingMultiplier, middle );
@@ -179,11 +171,11 @@ void arrayviewer::toggleBlink()
 arrayviewer::arrayviewer( QWidget *parent ) : QWidget( parent ),
     colorA( COLOR_A ), colorB ( COLOR_B ), colorDone( COLOR_DONE ),
     colorUnknown( COLOR_UNKNOWN ), colorBackground( COLOR_BACKGR ),
-    blinker( this ), blink( false), style( VIEW_STYLE::BARS )
+    blinker( this ), blink( false ), style( VIEW_STYLE::BARS )
 {
-    blinker.start( BLINK_TIME );
-    connect(&blinker, SIGNAL( timeout() ), this, SLOT( toggleBlink() ) );
-    connect(&blinker, SIGNAL( timeout() ), this, SLOT( repaint() ) );
+    blinker.setInterval( BLINK_TIME );
+    connect( &blinker, SIGNAL( timeout() ), this, SLOT( toggleBlink() ) );
+    connect( &blinker, SIGNAL( timeout() ), this, SLOT( repaint() ) );
 
 }
 void arrayviewer::setModel(const arraymodel *newModel)
@@ -199,8 +191,17 @@ void arrayviewer::setViewStyle(VIEW_STYLE newViewStyle)
 }
 void arrayviewer::paintEvent(QPaintEvent *event)
 {
-    //this is the endpoint for the paint event
     event->accept();
+    if( model->m_comparisons && !blinker.isActive() )
+    {
+        blink = true;
+        blinker.start();
+    }
+    if( !model->m_highlight )
+    {
+        blink = false;
+        blinker.stop();
+    }
 
     if( style == VIEW_STYLE::BARS )
     {

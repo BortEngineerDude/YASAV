@@ -3,5 +3,6 @@
         <file>icons/comparison.png</file>
         <file>icons/steps.png</file>
         <file>icons/swaps.png</file>
+        <file>YASAV_ru.qm</file>
     </qresource>
 </RCC>

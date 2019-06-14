@@ -24,7 +24,7 @@ public:
     virtual SORT_TYPE sortType() const = 0;
     virtual ~sorter() = default;
     const QString& state() const;
-    unsigned int steps() const;
+    int steps() const;
 
 public slots:
     virtual void advance() = 0;

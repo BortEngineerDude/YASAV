@@ -1,5 +1,3 @@
-//This class is basicly vector wrapper with some additional controls
-
 #ifndef ARRAYMODEL_H
 #define ARRAYMODEL_H
 

@@ -27,7 +27,7 @@ const QString &sorter::state() const
 {
     return m_state;
 }
-unsigned int sorter::steps() const
+int sorter::steps() const
 {
     return m_steps;
 }
